@@ -5,11 +5,11 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-27 15:27:35
+ * @LastEditTime : 2019-12-27 16:32:32
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
-	exit(json_encode(['status'=>$status,'msg'=>$msg],JSON_UNESCAPED_UNICODE));
+	showjson(['status'=>$status,'msg'=>$msg]);
 }
 //封装验证函数 利用laravel自动验证
 function data_check($data,$rule,$msg){
@@ -90,5 +90,13 @@ function http301($url = ''){
 	header('HTTP/1.1 301 Moved Permanently');
 	header("location:$url");
 	exit();
+}
+//api接口返回
+function api_json($code = 200,$msg = '请求成功',$data = [],$count = 0){
+	$count ? showjson(['code'=>$code,'msg'=>$msg,'data'=>$data,'count'=>$count]) : showjson(['code'=>$code,'msg'=>$msg,'data'=>$data]);
+}
+//将图片路径转换成前端可以访问的url
+function img_path_url($path){
+	return domain_name() . $path;
 }
 ?>

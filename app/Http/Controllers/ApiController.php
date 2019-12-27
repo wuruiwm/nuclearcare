@@ -1,13 +1,17 @@
 <?php
-
+/*
+ * @Author: 傍晚升起的太阳
+ * @QQ: 1250201168
+ * @Email: wuruiwm@qq.com
+ * @Date: 2019-12-27 16:35:33
+ * @LastEditors: 傍晚升起的太阳
+ * @LastEditTime: 2019-12-27 16:35:35
+ */
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
 class ApiController extends Controller
 {
-
     //文件上传
     public function upload(Request $request)
     {
@@ -18,7 +22,6 @@ class ApiController extends Controller
         //返回信息json
         $data = ['code'=>1, 'msg'=>'上传失败', 'data'=>''];
         $file = $request->file('file');
-
         //检查文件是否上传完成
         if ($file->isValid()){
             //检测图片类型

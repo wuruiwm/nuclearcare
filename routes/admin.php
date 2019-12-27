@@ -140,7 +140,7 @@ Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>['auth','perm
     });
 });
 
-//admin 统一路由入口
+//admin路由
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth'], function(){
     //文件上传
     Route::group(['prefix'=>'upload'],function(){
