@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-28 09:33:22
+ * @LastEditTime : 2019-12-28 11:19:10
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -15,7 +15,7 @@ function msg($status = 0,$msg = ''){
 function data_check($data,$rule,$msg,$is_admin = 1){
 	$validator = Illuminate\Support\Facades\Validator::make($data,$rule,$msg);
 	if($validator->fails()){
-		$is_admin ? msg(0,$validator->errors()->first()) : api_json(0,$validator->errors()->first());
+		$is_admin ? msg(0,$validator->errors()->first()) : api_json(500,$validator->errors()->first());
 	}
 	$data = $validator->validated();
 	return $data;
@@ -195,5 +195,24 @@ function decryptData( $appid , $sessionKey, $encryptedData, $iv ){
     $data = json_decode($result,true);
  
     return $data;
+}
+//随机字符串
+function getRandomChar($length = 32){
+    $str = null;
+    $strPol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+    $max = strlen($strPol) - 1;
+    for ($i = 0; $i < $length; $i++) {
+        $str .= $strPol[rand(0, $max)];
+    }
+    return $str;
+}
+//设置用户token
+function set_token($user_id){
+	$token = getRandomChar();
+	cache([$token =>$user_id], config('common.token_time'));
+	return ['token'=>$token,'token_time'=>config('common.token_time')];
+}
+function get_token(){
+	return cache($token);
 }
 ?>

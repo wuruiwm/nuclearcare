@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 15:20:43
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-27 17:05:45
+ * @LastEditTime : 2019-12-28 10:19:52
  */
 
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ Route::group(['namespace' => 'api'],function(){
     //wx相关
     Route::group(['prefix'=>'wx'],function(){
         Route::post('login','WxController@login');
-        Route::post('userdecrypt','WxController@userdecrypt');
+        Route::post('memberdecrypt','WxController@memberdecrypt');
         Route::post('mobiledecrypt','WxController@mobiledecrypt');
     });
 });

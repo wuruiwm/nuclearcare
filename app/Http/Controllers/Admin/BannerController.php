@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 09:38:45
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-27 17:02:48
+ * @LastEditTime : 2019-12-28 10:50:17
  */
 
 namespace App\Http\Controllers\Admin;
@@ -25,7 +25,11 @@ class BannerController extends BaseController
     }
     public function delete(Request $request){
         $id = delete_id($request->input('id'));
-        Banner::where('id',$id)->delete() ? msg(1,'删除成功') : msg(0,'删除失败');
+        try {
+            Banner::where('id',$id)->delete() ? msg(1,'删除成功') : msg(0,'删除失败');
+        } catch (\Throwable $th) {
+            msg(0,'删除失败');
+        }
     }
     public function create(Request $request){
         $this->post($request);
@@ -47,12 +51,20 @@ class BannerController extends BaseController
         $id = get_id($request->input('id'));
         $data['update_time'] = time();
         if (!empty($id)) {
-            Banner::where('id',$id)->update($data) ? msg(1,'修改成功') : msg(0,'修改失败');
+            try {
+                Banner::where('id',$id)->update($data) ? msg(1,'修改成功') : msg(0,'修改失败');
+            } catch (\Throwable $th) {
+                msg(0,'修改失败');
+            }
         }else{
             $total = Banner::count();
             $total < 10 || msg(0,'轮播图数量已达上限10个,请删除后再添加');
             $data['create_time'] = time();
-            Banner::insert($data) ? msg(1,'添加成功') : msg(0,'添加失败');
+            try {
+                Banner::insert($data) ? msg(1,'添加成功') : msg(0,'添加失败');
+            } catch (\Throwable $th) {
+                msg(0,'添加失败');
+            }
         }
     }
 }
