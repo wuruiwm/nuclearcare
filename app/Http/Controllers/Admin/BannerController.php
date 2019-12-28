@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 09:38:45
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-27 16:23:44
+ * @LastEditTime : 2019-12-27 17:02:48
  */
 
 namespace App\Http\Controllers\Admin;
@@ -33,7 +33,7 @@ class BannerController extends BaseController
     public function edit(Request $request){
         $this->post($request);
     }
-    public function post($request){
+    protected function post($request){
         $rule = [
             'img_path' => 'required',
             'sort'=>'required|integer',

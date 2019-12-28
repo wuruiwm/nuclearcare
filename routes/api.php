@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 15:20:43
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-27 16:36:32
+ * @LastEditTime : 2019-12-27 17:05:45
  */
 
 use Illuminate\Http\Request;
@@ -27,5 +27,11 @@ Route::post('upload', 'ApiController@upload')->name('api.upload');
 //api路由
 Route::group(['namespace' => 'api'],function(){
     //轮播图
-    Route::get('banner','BannerController@list');  
+    Route::get('banner','BannerController@list');
+    //wx相关
+    Route::group(['prefix'=>'wx'],function(){
+        Route::post('login','WxController@login');
+        Route::post('userdecrypt','WxController@userdecrypt');
+        Route::post('mobiledecrypt','WxController@mobiledecrypt');
+    });
 });

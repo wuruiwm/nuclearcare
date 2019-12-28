@@ -5,10 +5,12 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 15:57:02
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-27 16:29:14
+ * @LastEditTime : 2019-12-27 17:22:45
  */
 namespace App\Http\Controllers\api;
+
 use App\Models\Banner;
+
 class BannerController extends BaseController
 {
     public function list(){

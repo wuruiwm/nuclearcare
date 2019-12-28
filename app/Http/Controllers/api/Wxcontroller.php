@@ -1,0 +1,52 @@
+<?php
+/*
+ * @Author: 傍晚升起的太阳
+ * @QQ: 1250201168
+ * @Email: wuruiwm@qq.com
+ * @Date: 2019-12-27 17:06:05
+ * @LastEditors  : 傍晚升起的太阳
+ * @LastEditTime : 2019-12-28 09:34:59
+ */
+
+namespace App\Http\Controllers\api;
+
+use Illuminate\Http\Request;
+
+class WxController extends BaseController
+{
+    public function login(Request $request){
+        $code = $request->input('code');
+        !empty($code) || api_json(0,'code不能为空');
+ 		$param['appid'] = config('wx.appid');    //小程序id
+ 		$param['secret'] = config('wx.appsecret');    //小程序密钥
+ 		$param['js_code'] = define_str_replace($code);
+        $param['grant_type'] = 'authorization_code';
+ 		$http_key = httpCurl('https://api.weixin.qq.com/sns/jscode2session', $param, 'GET');
+        $session_key = @json_decode($http_key,true);
+        !empty($session_key['session_key']) ? api_json(200,'获取session_key成功',$session_key) : api_json(0,'获取session_key失败');
+    }
+    public function userdecrypt(Request $request){
+        $data = $this->decrypt($request);
+        return $data;
+    }
+    public function mobiledecrypt(Request $request){
+        $data = $this->decrypt($request);
+        return $data;
+    }
+    protected function decrypt($request){
+        $rule = [
+            'session_key' => 'required',
+            'encrypteData' => 'required',
+            'iv' => 'required',
+        ];
+        $msg = [
+            'session_key.required'=>'session_key不能为空',
+            'encrypteData.required'=>'encrypteData不能为空',
+            'iv.required'=>'iv不能为空',
+        ];
+        $data = data_check($request->all(),$rule,$msg,0);
+        $data['encrypteData'] = define_str_replace(urldecode($data['encrypteData']));
+        $data['iv'] = define_str_replace($data['iv']);
+        return decryptData(config('wx.appid'), $data['session_key'], $data['encrypteData'], $data['iv']);
+    }
+}
