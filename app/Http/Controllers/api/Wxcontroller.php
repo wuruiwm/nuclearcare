@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-28 11:19:36
+ * @LastEditTime : 2019-12-28 11:31:57
  */
 
 namespace App\Http\Controllers\api;
@@ -58,8 +58,6 @@ class WxController extends BaseController
             'iv.required'=>'iv不能为空',
         ];
         $data = data_check($request->all(),$rule,$msg,0);
-        $data['encrypteData'] = define_str_replace(urldecode($data['encrypteData']));
-        $data['iv'] = define_str_replace($data['iv']);
-        return decryptData(config('wx.appid'), $data['session_key'], $data['encrypteData'], $data['iv']);
+        return decryptData(config('wx.appid'), $data['session_key'], define_str_replace(urldecode($data['encrypteData'])), define_str_replace($data['iv']));
     }
 }
