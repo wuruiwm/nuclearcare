@@ -2,6 +2,43 @@
 
 use Illuminate\Support\Str;
 
+if($_SERVER['HTTP_HOST'] == 'xx.htto.cn'){
+    //本地开发
+    $mysql_host = '192.168.18.173';
+    $mysql_port = '3306';
+    $mysql_database = 'xx';
+    $mysql_username = 'root';
+    $mysql_password = 'yhywas123';
+    $redis_host = '192.168.18.173';
+    $redis_password = null;
+    $redis_port = 6379;
+    $redis_database = 0;
+    $redis_database_cache = 1;
+}else if($_SERVER['HTTP_HOST'] == 'xx.nikm.cn'){
+    //线上开发
+    $mysql_host = '127.0.0.1';
+    $mysql_port = '3306';
+    $mysql_database = 'xx';
+    $mysql_username = 'xx';
+    $mysql_password = 'xx';
+    $redis_host = '127.0.0.1';
+    $redis_password = null;
+    $redis_port = 6379;
+    $redis_database = 0;
+    $redis_database_cache = 1;
+}else{
+    //其他取env参数
+    $mysql_host = env('DB_HOST', '127.0.0.1');
+    $mysql_port = env('DB_PORT', '3306');
+    $mysql_database = env('DB_DATABASE', 'forge');
+    $mysql_username = env('DB_USERNAME', 'forge');
+    $mysql_password = env('DB_PASSWORD', '');
+    $redis_host = env('REDIS_HOST', '127.0.0.1');
+    $redis_password = env('REDIS_PASSWORD', null);
+    $redis_port = env('REDIS_PORT', 6379);
+    $redis_database = env('REDIS_DB', 0);
+    $redis_database_cache = env('REDIS_CACHE_DB', 1);
+}
 return [
 
     /*
@@ -46,11 +83,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => $mysql_host,
+            'port' => $mysql_port,
+            'database' => $mysql_database,
+            'username' => $mysql_username,
+            'password' => $mysql_password,
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
@@ -128,18 +165,18 @@ return [
 
         'default' => [
             'url' => env('REDIS_URL'),
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DB', 0),
+            'host' => $redis_host,
+            'password' => $redis_password,
+            'port' => $redis_port,
+            'database' => $redis_database,
         ],
 
         'cache' => [
             'url' => env('REDIS_URL'),
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_CACHE_DB', 1),
+            'host' => $redis_host,
+            'password' => $redis_password,
+            'port' => $redis_port,
+            'database' => $redis_database_cache,
         ],
 
     ],
