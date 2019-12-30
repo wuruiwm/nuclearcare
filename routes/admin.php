@@ -162,4 +162,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::post('create','ServiceController@create')->name('admin.service.create')->middleware('permission:service.create');
         Route::post('edit','ServiceController@edit')->name('admin.service.edit')->middleware('permission:service.edit');
     });
+    //会员管理
+    Route::group(['prefix'=>'member','middleware' => 'permission:member'],function(){
+        Route::get('index','MemberController@index')->name('admin.member')->middleware('permission:member.index');
+        Route::get('list','MemberController@list')->name('admin.member.list')->middleware('permission:member.index');
+        Route::post('recharge','MemberController@recharge')->name('admin.member.recharge')->middleware('permission:member.recharge');
+    });
 });
