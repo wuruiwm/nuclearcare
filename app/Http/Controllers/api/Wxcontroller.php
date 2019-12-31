@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-30 14:47:03
+ * @LastEditTime : 2019-12-31 10:39:37
  */
 
 namespace App\Http\Controllers\api;
@@ -31,6 +31,11 @@ class WxController extends BaseController
         !empty($data['openId']) || api_json(500,'登陆出错,请重试');
         $member = Member::get_member($data['openId']);
         !empty($member) || $member = Member::member_create($data);
+        !empty($member) || api_json(500,'登陆出错,请重试');
+        $token = set_token($member['id']);
+        $member['token'] = $token['token'];
+        $member['token_time'] = $token['token_time'];
+        api_json(200,'登陆成功',$member);
         api_json(200,'用户信息获取成功',$member);
     }
     public function mobiledecrypt(Request $request){
