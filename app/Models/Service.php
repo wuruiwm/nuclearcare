@@ -5,9 +5,11 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-28 14:04:50
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-30 13:44:15
+ * @LastEditTime : 2019-12-31 15:00:03
  */
 namespace App\Models;
+
+use Illuminate\Support\Facades\Cache;
 
 class Service extends Base
 {
@@ -23,16 +25,11 @@ class Service extends Base
         return ['data'=>$data,'count'=>$count];
     }
     public static function api_list(){
-        $model = self::orderBy('sort','desc')
-        ->where('type',1);
-        $standard['data'] = $model->select(['id','title','price'])
-        ->get();
-        $standard['count'] = $model->count();
-        $model = self::orderBy('sort','desc')
-        ->where('type',2);
-        $additional['data'] = $model->select(['id','title','price'])
-        ->get();
-        $additional['count'] = $model->count();
-        return ['data'=>['standard'=>$standard,'additional'=>$additional]];
+        $model = self::orderBy('sort','desc');
+        $data = Cache::store('redis')->rememberForever('api_service_list_data',function () use($model){
+            return $model->select(['id','title','price','type'])
+            ->get();
+        });
+        return $data;
     }
 }

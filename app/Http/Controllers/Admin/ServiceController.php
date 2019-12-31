@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-28 11:41:23
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-30 13:42:33
+ * @LastEditTime : 2019-12-31 15:07:54
  */
 namespace App\Http\Controllers\Admin;
 
@@ -14,6 +14,9 @@ use App\Models\Service;
 
 class ServiceController extends BaseController
 {
+    protected $redis_key_arr = [
+        'api_service_list_data',
+    ];
     public function index(){
         return view('admin.service.index');
     }
@@ -32,6 +35,7 @@ class ServiceController extends BaseController
     public function delete(Request $request){
         $id = delete_id($request->input('id'));
         try {
+            $this->del_redis();
             Service::where('id',$id)->delete() ? msg(1,'删除成功') : msg(0,'删除失败');
         } catch (\Throwable $th) {
             msg(0,'删除失败');
@@ -57,6 +61,7 @@ class ServiceController extends BaseController
         $data['update_time'] = time();
         if (!empty($id)){
             try {
+                $this->del_redis();
                 Service::where('id',$id)->update($data) ? msg(1,'修改成功') : msg(0,'修改失败');
             } catch (\Throwable $th) {
                 msg(0,'修改失败');
@@ -64,6 +69,7 @@ class ServiceController extends BaseController
         }else{
             $data['create_time'] = time();
             try {
+                $this->del_redis();
                 Service::insert($data) ? msg(1,'添加成功') : msg(0,'添加失败');
             } catch (\Throwable $th) {
                 msg(0,'添加失败');

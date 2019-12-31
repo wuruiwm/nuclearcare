@@ -5,10 +5,12 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-28 09:59:35
+ * @LastEditTime : 2019-12-31 14:31:03
  */
 
 namespace App\Models;
+
+use Illuminate\Support\Facades\Cache;
 
 class Banner extends Base
 {
@@ -23,8 +25,13 @@ class Banner extends Base
     }
     public static function api_list(){
         $model = self::orderBy('sort','desc');
-        $count = $model->count();
-        $data = $model->select(['id','img_path'])->get();
+        $data = Cache::store('redis')->rememberForever('api_banner_list_data',function () use($model){
+            return $model->select(['id','img_path'])
+            ->get();
+        });
+        $count = Cache::store('redis')->rememberForever('api_banner_list_count',function () use($model){
+            return $model->count();
+        });
         return ['data'=>$data,'count'=>$count];
     }
 }

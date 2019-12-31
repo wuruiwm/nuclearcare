@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-31 10:39:37
+ * @LastEditTime : 2019-12-31 10:51:29
  */
 
 namespace App\Http\Controllers\api;
@@ -36,7 +36,7 @@ class WxController extends BaseController
         $member['token'] = $token['token'];
         $member['token_time'] = $token['token_time'];
         api_json(200,'登陆成功',$member);
-        api_json(200,'用户信息获取成功',$member);
+        //api_json(200,'用户信息获取成功',$member);
     }
     public function mobiledecrypt(Request $request){
         $request->input('openid') ? $openid = $request->input('openid') : api_json(500,'请传入openid');

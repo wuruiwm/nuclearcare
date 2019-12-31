@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 09:38:45
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-28 14:33:30
+ * @LastEditTime : 2019-12-31 15:06:28
  */
 
 namespace App\Http\Controllers\Admin;
@@ -15,6 +15,10 @@ use App\Models\Banner;
 
 class BannerController extends BaseController
 {
+    protected $redis_key_arr = [
+        'api_banner_list_data',
+        'api_banner_list_count'
+    ];
     public function index(){
         return view('admin.banner.index');
     }
@@ -26,6 +30,7 @@ class BannerController extends BaseController
     public function delete(Request $request){
         $id = delete_id($request->input('id'));
         try {
+            $this->del_redis();
             Banner::where('id',$id)->delete() ? msg(1,'删除成功') : msg(0,'删除失败');
         } catch (\Throwable $th) {
             msg(0,'删除失败');
@@ -52,6 +57,7 @@ class BannerController extends BaseController
         $data['update_time'] = time();
         if (!empty($id)) {
             try {
+                $this->del_redis();
                 Banner::where('id',$id)->update($data) ? msg(1,'修改成功') : msg(0,'修改失败');
             } catch (\Throwable $th) {
                 msg(0,'修改失败');
@@ -61,6 +67,7 @@ class BannerController extends BaseController
             $total < 10 || msg(0,'轮播图数量已达上限10个,请删除后再添加');
             $data['create_time'] = time();
             try {
+                $this->del_redis();
                 Banner::insert($data) ? msg(1,'添加成功') : msg(0,'添加失败');
             } catch (\Throwable $th) {
                 msg(0,'添加失败');
