@@ -13,7 +13,7 @@
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 1rem;width: 15rem;">
-            <input type="text" placeholder="请输入昵称,手机号,OPENID" class="layui-input" id="keyword">
+            <input type="text" placeholder="请输入昵称,OPENID" class="layui-input" id="keyword">
         </div>
         <div class="layui-inline" style="margin-left: 1rem;">
             <a class="layui-btn  layui-btn-normal" id="search">搜索</a>
@@ -94,7 +94,7 @@ layui.use(['table','form','layer'], function(){
       {field:'avatar_url',title: '会员头像',align: 'center',templet:'#avatar'},
       {field:'openid',title: 'OPENID',align: 'center'},
       {field:'nickname',title: '会员昵称',align: 'center'},
-      {field:'phone',title: '会员手机号',align: 'center'},
+      //{field:'phone',title: '会员手机号',align: 'center'},
       {field:'balance',title: '会员余额',align: 'center'},
       {field:'create_time', title: '注册时间',align: 'center'},
       {field:'update_time', title: '最后修改时间',align: 'center'},
