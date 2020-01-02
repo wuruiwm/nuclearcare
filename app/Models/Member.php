@@ -5,10 +5,12 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-30 15:44:22
+ * @LastEditTime : 2020-01-02 10:28:52
  */
 
 namespace App\Models;
+
+use Illuminate\Support\Facades\DB;
 
 class Member extends Base
 {
@@ -35,7 +37,7 @@ class Member extends Base
     public static function list($number,$limit,$keyword = ''){
         $model = self::orderBy('id','asc')->where(function($query)use($keyword){
             empty($keyword) || $query->orwhere('nickname','like','%'.$keyword.'%')
-            ->orwhere('phone','like','%'.$keyword.'%')
+            ->orwhere('id',$keyword)
             ->orwhere('openid','like','%'.$keyword.'%');
         });
         $count = $model->count();
@@ -43,5 +45,25 @@ class Member extends Base
         ->limit($limit)
         ->get();
         return ['data'=>$data,'count'=>$count];
+    }
+    public static function balance($member_id,$price,$type,$remark){
+        //type 1加 2减 3最终
+        DB::beginTransaction();
+        try {
+            $type != 1 || $blance_res = self::where('id',$member_id)->increment('balance',$price,['update_time'=>time()]);
+            $type != 2 || $blance_res = self::where('id',$member_id)->decrement('balance',$price,['update_time'=>time()]);
+            $type != 3 || $blance_res = self::where('id',$member_id)->update(['balance'=>$price,'update_time'=>time()]);
+            $blance_log_res = BalanceLog::insert_log($member_id,$type,$price,$remark);
+            if(!empty($blance_log_res) && !empty($blance_res)){
+                DB::commit();
+                return true;
+            }else{
+                DB::rollBack();
+                return false;
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return false;
+        }
     }
 }

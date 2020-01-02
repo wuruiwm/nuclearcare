@@ -20,34 +20,6 @@
         </div>
     </blockquote>
 </form>
-<table class="layui-hide" id="table" lay-filter="table"></table>
-<div id="recharge" class="layui-form" style="display: none;margin:1rem 3rem;">
-  <div class="layui-form-item">
-    <label class="layui-form-label">操作</label>
-    <div class="layui-input-block">
-      <input type="radio" name="type" value="1" title="增加" checked>
-      <input type="radio" name="type" value="2" title="减少">
-      <input type="radio" name="type" value="3" title="最终">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">金额</label>
-    <div class="layui-input-block">
-      <input type="text" placeholder="请输入金额" class="layui-input" value="0" id="price">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">备注</label>
-    <div class="layui-input-block">
-      <input type="text" placeholder="请输入备注" class="layui-input" value="" id="remark">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button class="layui-btn" lay-filter="formDemo" id="submit">立即提交</button>
-    </div>
-  </div>
-</div>
 <script type="text/html" id="avatar">
   <div>
     <a href="#">
@@ -55,9 +27,16 @@
     </a>
   </div>
 </script>
-<script type="text/html" id="buttons">
-  <a class="layui-btn layui-btn-xs" lay-event="recharge">充值</a>
+<script type="text/html" id="type">
+@{{# if(d.type == 1){ }}
+    增加
+@{{# }else if(d.type == 2){ }}
+    减少
+@{{# }else if(d.type == 3){ }}
+    最终
+@{{# } }}
 </script>
+<table class="layui-hide" id="table" lay-filter="table"></table>
 <script src="/static/admin/jquery/jquery.min.js"></script>
 <script src="/static/admin/layui/layui.js"></script>
 <script type="text/javascript">
@@ -84,7 +63,7 @@ layui.use(['table','form','layer'], function(){
   var layer = layui.layer;
   table.render({
     elem: '#table' //表格id
-    ,url:"{{route('admin.member.list')}}"//list接口地址
+    ,url:"{{route('admin.member.balance_detail_list')}}"//list接口地址
     ,cellMinWidth: 80 //全局定义常规单元格的最小宽度
     ,height: 'full-120',
     page: true,
@@ -100,54 +79,28 @@ layui.use(['table','form','layer'], function(){
       {field:'avatar_url',title: '会员头像',align: 'center',templet:'#avatar'},
       {field:'openid',title: 'OPENID',align: 'center'},
       {field:'nickname',title: '会员昵称',align: 'center'},
-      //{field:'phone',title: '会员手机号',align: 'center'},
-      {field:'balance',title: '会员余额',align: 'center'},
-      {field:'create_time', title: '注册时间',align: 'center'},
+      {field:'type', title: '操作',align: 'center',templet:'#type'},
+      {field:'price',title: '金额',align: 'center'},
+      {field:'remark', title: '备注',align: 'center'},
+      {field:'create_time', title: '创建时间',align: 'center'},
       {field:'update_time', title: '最后修改时间',align: 'center'},
-      {fixed:'right',title: '操作', align:'center', toolbar: '#buttons'}
     ]],
     done: function () {
         hoverOpenImg();
     }
   });
-  //监听
-  table.on('tool(table)', function(obj){
-      //data就是一行的数据
-      var data = obj.data;
-      $("#price").val('');
-      $('#remark').val('');
-      if(obj.event === 'recharge'){
-        id = data.id;
-        layer.open({
-            type: 1,
-            title:'充值',
-            skin: 'layui-layer-rim', //加上边框
-            area: ['50rem;', '18rem;'], //宽高
-            content: $('#recharge'),
-          });
-      }
-    });
 });
-$('#submit').click(function(){
-    var data = {
-        id:id,
-        type:$("input[type='radio']:checked").val(),
-        price:$("#price").val(),
-        remark:$('#remark').val(),
-    };
-    var url = "{{route('admin.member.recharge')}}";
-    $.post(url,data,function(res){
-        if (res.status == 1) {
-            layer.closeAll();
-            layui.use('table', function(){
-                var table = layui.table;
-                table.reload('table', { //表格的id
-                    url:"{{route('admin.member.list')}}",
-                });
-          })
-        }
-        layer.msg(res.msg);
-    },'json');
+$('#search').click(function(){
+      //传递where条件实现搜索，并且重载表格数据
+      layui.use('table', function(){
+            var table = layui.table;
+            table.reload('table', { //表格的id
+                url:"{{route('admin.member.balance_detail_list')}}",
+                where:{
+                    'keyword':$('#keyword').val(),
+                }
+            });
+      })
 })
 function hoverOpenImg() {
         var img_show = null;
@@ -164,17 +117,5 @@ function hoverOpenImg() {
             layer.close(img_show);
         });
 }
-$('#search').click(function(){
-      //传递where条件实现搜索，并且重载表格数据
-      layui.use('table', function(){
-            var table = layui.table;
-            table.reload('table', { //表格的id
-                url:"{{route('admin.member.list')}}",
-                where:{
-                    'keyword':$('#keyword').val(),
-                }
-            });
-      })
-})
 </script>
 </html>

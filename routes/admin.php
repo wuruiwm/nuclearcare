@@ -167,5 +167,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::get('index','MemberController@index')->name('admin.member')->middleware('permission:member.index');
         Route::get('list','MemberController@list')->name('admin.member.list')->middleware('permission:member.index');
         Route::post('recharge','MemberController@recharge')->name('admin.member.recharge')->middleware('permission:member.recharge');
+        Route::get('balance_detail_index','MemberController@balance_detail_index')->name('admin.member.balance_detail_index')->middleware('permission:member.balance_detail_index');
+        Route::get('balance_detail_list','MemberController@balance_detail_list')->name('admin.member.balance_detail_list')->middleware('permission:member.balance_detail_index');
     });
 });

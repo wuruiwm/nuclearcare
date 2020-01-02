@@ -5,12 +5,13 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-30 14:54:41
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-31 09:51:05
+ * @LastEditTime : 2020-01-02 10:19:23
  */
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
+use App\Models\BalanceLog;
 
 class MemberController extends BaseController
 {
@@ -37,13 +38,15 @@ class MemberController extends BaseController
             'price.numeric'=>'请输入正确的金额',
         ];
         $data = data_check($request->all(),$rule,$msg);
-        try {
-            $data['type'] != 1 || $res = Member::where('id',$data['id'])->increment('balance',$data['price'],['update_time'=>time()]);
-            $data['type'] != 2 || $res = Member::where('id',$data['id'])->decrement('balance',$data['price'],['update_time'=>time()]);
-            $data['type'] != 3 || $res = Member::where('id',$data['id'])->update(['balance'=>$data['price'],'update_time'=>time()]);
-            $res ? msg(1,'修改成功') : msg(0,'修改失败');
-        } catch (\Throwable $th) {
-            msg(0,'修改失败');
-        }
+        !empty($request->input('remark')) ? $remark = $request->input('remark') : $remark = '无备注';
+        Member::balance($data['id'],$data['price'],$data['type'],'后台操作:'.$remark) ? msg(1,'修改成功') : msg(0,'修改失败');
+    }
+    public function balance_detail_index(){
+        return view('admin.member.balance_detail_index');
+    }
+    public function balance_detail_list(Request $request){
+        extract(page($request->input()));
+        extract(BalanceLog::list($number,$limit,$request->input('keyword')));
+        return ['data'=>$data,'count'=>$count,'code'=>0];
     }
 }
