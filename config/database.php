@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 
-if($_SERVER['HTTP_HOST'] == 'xx.htto.cn'){
+if(!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'xx.htto.cn'){
     //本地开发
     $mysql_host = '192.168.18.173';
     $mysql_port = '3306';
@@ -14,7 +14,7 @@ if($_SERVER['HTTP_HOST'] == 'xx.htto.cn'){
     $redis_port = 6379;
     $redis_database = 0;
     $redis_database_cache = 1;
-}else if($_SERVER['HTTP_HOST'] == 'xx.nikm.cn'){
+}else if(!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'xx.nikm.cn'){
     //线上开发
     $mysql_host = '127.0.0.1';
     $mysql_port = '3306';

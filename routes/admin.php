@@ -170,4 +170,12 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::get('balance_detail_index','MemberController@balance_detail_index')->name('admin.member.balance_detail_index')->middleware('permission:member.balance_detail_index');
         Route::get('balance_detail_list','MemberController@balance_detail_list')->name('admin.member.balance_detail_list')->middleware('permission:member.balance_detail_index');
     });
+    //营销管理
+    Route::group(['prefix'=>'marketing','middleware' => 'permission:marketing'],function(){
+        Route::get('recharge_index','MarketingController@recharge_index')->name('admin.marketing.recharge')->middleware('permission:marketing.recharge.index');
+        Route::get('recharge_list','MarketingController@recharge_list')->name('admin.marketing.recharge.list')->middleware('permission:marketing.recharge.index');
+        Route::post('recharge_delete','MarketingController@recharge_delete')->name('admin.marketing.recharge.delete')->middleware('permission:marketing.recharge.delete');
+        Route::post('recharge_create','MarketingController@recharge_create')->name('admin.marketing.recharge.create')->middleware('permission:marketing.recharge.create');
+        Route::post('recharge_edit','MarketingController@recharge_edit')->name('admin.marketing.recharge.edit')->middleware('permission:marketing.recharge.edit');
+    });
 });

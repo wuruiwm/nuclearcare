@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-28 11:19:10
+ * @LastEditTime : 2020-01-02 13:42:26
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -212,7 +212,77 @@ function set_token($user_id){
 	cache([$token =>$user_id], config('common.token_time'));
 	return ['token'=>$token,'token_time'=>config('common.token_time')];
 }
+//获取token
 function get_token(){
-	return cache($token);
+    $member_id = cache(request()->header('token'));
+    !empty($member_id) || api_json(500,'登陆失效,请重试');
+	return $member_id;
+}
+//用于微信支付转换认证的信息用的
+function to_url_params($data){
+	$buff = "";
+	foreach ($data as $k => $v){
+	    if($k != "sign" && $v != "" && !is_array($v)){
+	      $buff .= $k . "=" . $v . "&";
+	    }
+	}
+	$buff = trim($buff, "&");
+	return $buff;
+}
+//微信支付-数组转xml
+function array_to_xml($arr){
+	$xml = "<xml>";
+	foreach ($arr as $k=>$v){
+	    if (is_numeric($v)){
+	        $xml.="<".$k.">".$v."</".$k.">";
+	    }else{
+	        $xml.="<".$k."><![CDATA[".$v."]]></".$k.">";
+	    }
+	}
+	$xml .="</xml>";
+	return $xml;
+}
+//xml转json
+function xml_to_json($xmlstring) {
+	return json_encode(xml_to_array($xmlstring),JSON_UNESCAPED_UNICODE);
+}
+//用户post方法请求xml信息用的
+function post_xml_curl($xml, $url, $useCert = false, $second = 10){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_TIMEOUT, $second);
+    curl_setopt($ch,CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+    curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+    $data = curl_exec($ch);
+    if($data){
+        curl_close($ch);
+        return $data;
+    } else {
+        $error = curl_errno($ch);
+        curl_close($ch);
+        return $error;
+    }
+}
+function post_url($post_data, $url){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch,CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+    curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
+}
+//把xml转换成array
+function xml_to_array($xml){
+    return simplexml_load_string($xml,'SimpleXMLElement',LIBXML_NOCDATA);
 }
 ?>

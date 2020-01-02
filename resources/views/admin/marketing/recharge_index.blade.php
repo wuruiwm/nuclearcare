@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>服务列表</title>
+    <title>充值优惠管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -14,55 +14,22 @@
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 2rem;">
-            <a class="layui-btn add">添加服务</a>
-        </div>
-        <div class="layui-inline" style="margin-left: 1rem;">
-            <select id="search_type">
-                <option value="0">请选择服务</option>
-                <option value="1">标准服务</option>
-                <option value="2">附加服务</option>
-            </select>
-        </div>
-        <div class="layui-inline" style="margin-left: 1rem;">
-            <a class="layui-btn  layui-btn-normal" id="search">搜索</a>
+            <a class="layui-btn add">添加充值优惠</a>
         </div>
     </blockquote>
 </form>
 <table class="layui-hide" id="table" lay-filter="table"></table>
 <div id="edit" class="layui-form" style="display: none;margin:1rem 3rem;">
-  <div class="layui-form-item img" style="display: none;">
-    <label class="layui-form-label"></label>
+  <div class="layui-form-item">
+    <label class="layui-form-label">满多少</label>
     <div class="layui-input-block">
-        <img src="" alt="" id="img_show" style="width: 355.55px;height: 200px;">
+      <input type="text" placeholder="请输入满多少金额赠送" class="layui-input" value="" id="full">
     </div>
   </div>
   <div class="layui-form-item">
-    <label class="layui-form-label">排序</label>
+    <label class="layui-form-label">送多少</label>
     <div class="layui-input-block">
-      <input type="text" placeholder="数字越大越靠前" class="layui-input" value="0" id="sort">
-      <span style="color:red;">*排序数字越大，越靠前</span>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">服务名称</label>
-    <div class="layui-input-block">
-      <input type="text" placeholder="请输入服务名称" class="layui-input" value="" id="title">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">服务类型</label>
-    <div class="layui-input-block">
-      <select id="type">
-        <option value="0">请选择服务类型</option>
-        <option value="1">标准服务</option>
-        <option value="2">附加服务</option>
-      </select>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">服务价格</label>
-    <div class="layui-input-block">
-      <input type="text" placeholder="请输入服务价格" class="layui-input" value="" id="price">
+      <input type="text" placeholder="请输入赠送多少余额" class="layui-input" value="" id="give">
     </div>
   </div>
   <div class="layui-form-item">
@@ -71,15 +38,6 @@
     </div>
   </div>
 </div>
-<script type="text/html" id="type_name">
-@{{# if(d.type == 1){ }}
-    标准服务
-@{{# }else if(d.type == 2){ }}
-    附加服务
-@{{# }else{ }}
-    未知服务
-@{{# } }}
-</script>
 <script type="text/html" id="buttons">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -110,7 +68,7 @@ layui.use(['table','form','layer'], function(){
   var layer = layui.layer;
   table.render({
     elem: '#table' //表格id
-    ,url:"{{route('admin.service.list')}}"//list接口地址
+    ,url:"{{route('admin.marketing.recharge.list')}}"//list接口地址
     ,cellMinWidth: 80 //全局定义常规单元格的最小宽度
     ,height: 'full-120',
     page: true,
@@ -123,14 +81,12 @@ layui.use(['table','form','layer'], function(){
     //field是取接口的字段值
     //width是宽度，不填则自动根据值的长度
       {field:'id', title: 'ID',align: 'center'},
-      {field:'sort',title: '排序',align: 'center'},
-      {field:'title',title: '名称',align: 'center'},
-      {field:'type',title: '类型',align: 'center',templet:'#type_name'},
-      {field:'price',title: '价格',align: 'center'},
+      {field:'full',title: '满多少',align: 'center'},
+      {field:'give',title: '送多少',align: 'center',templet:'#img_path'},
       {field:'create_time', title: '创建时间',align: 'center'},
       {field:'update_time', title: '最后修改时间',align: 'center'},
       {fixed:'right',title: '操作', align:'center', toolbar: '#buttons'}
-    ]],
+    ]]
   });
   //监听
   table.on('tool(table)', function(obj){
@@ -139,7 +95,7 @@ layui.use(['table','form','layer'], function(){
       var data = obj.data;
       if(obj.event === 'del'){
           layer.confirm('真的删除吗', function(index){
-              $.post("{{route('admin.service.delete')}}",{id:data.id},function(res){
+              $.post("{{route('admin.marketing.recharge.delete')}}",{id:data.id},function(res){
                 if (res.status == 1) {
                     obj.del();//删除表格这行数据
                 }
@@ -148,19 +104,13 @@ layui.use(['table','form','layer'], function(){
           });
       }else if(obj.event === 'edit'){
           id = data.id;
-          $('#title').val(data.title);
-          $('#price').val(data.price);
-          $('#sort').val(data.sort);
-          $('#type').val(data.type);
-          layui.use('form', function(){
-          var form = layui.form;
-              form.render('select');
-          });
+          $('#full').val(data.full);
+          $('#give').val(data.give);
           layer.open({
             type: 1,
-            title:'编辑服务',
+            title:'编辑充值优惠',
             skin: 'layui-layer-rim', //加上边框
-            area: ['50rem;', '22rem;'], //宽高
+            area: ['50rem;', '14rem;'], //宽高
             content: $('#edit'),
           });
       }
@@ -168,34 +118,26 @@ layui.use(['table','form','layer'], function(){
 });
 $('.add').click(function(){
     id = 0;
-    $('#title').val('');
-    $('#price').val('');
-    $('#sort').val('0');
-    $('#type').val('0');
-    layui.use('form', function(){
-        var form = layui.form;
-        form.render('select');
-    });
+    $('#full').val('');
+    $('#give').val('');
     layer.open({
             type: 1,
-            title:'添加服务',
+            title:'添加充值优惠',
             skin: 'layui-layer-rim', //加上边框
-            area: ['50rem;', '22rem;'], //宽高
+            area: ['50rem;', '14rem;'], //宽高
             content: $('#edit'),
-          });
+    });
 })
 $('#submit').click(function(){
     var data = {
         id:id,
-        sort:$('#sort').val(),
-        title:$('#title').val(),
-        price:$('#price').val(),
-        type:$('#type').val(),
+        full:$('#full').val(),
+        give:$('#give').val()
     };
     if(!id || id == '0'){
-        var url = "{{route('admin.service.create')}}";
+        var url = "{{route('admin.marketing.recharge.create')}}";
     }else{
-        var url = "{{route('admin.service.edit')}}";
+        var url = "{{route('admin.marketing.recharge.edit')}}";
     }
     $.post(url,data,function(res){
         if (res.status == 1) {
@@ -203,24 +145,12 @@ $('#submit').click(function(){
             layui.use('table', function(){
                 var table = layui.table;
                 table.reload('table', { //表格的id
-                    url:"{{route('admin.service.list')}}",
+                    url:"{{route('admin.marketing.recharge.list')}}",
                 });
           })
         }
         layer.msg(res.msg);
-    },'json');
-})
-$('#search').click(function(){
-      //传递where条件实现搜索，并且重载表格数据
-      layui.use('table', function(){
-            var table = layui.table;
-            table.reload('table', { //表格的id
-                url:"{{route('admin.service.list')}}",
-                where:{
-                    'type':$('#search_type').val(),
-                }
-            });
-      })
+    });
 })
 </script>
 </html>
