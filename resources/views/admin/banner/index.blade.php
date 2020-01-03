@@ -90,8 +90,8 @@ layui.use(['table','form','layer'], function(){
     ,cellMinWidth: 80 //全局定义常规单元格的最小宽度
     ,height: 'full-120',
     page: true,
-    limits: [15, 25, 45, 60],
-    limit: 15
+    limits: [14, 25, 45, 60],
+    limit: 14
     ,cols: [[
     //align属性是文字在列表中的位置 可选参数left center right
     //sort属性是排序功能

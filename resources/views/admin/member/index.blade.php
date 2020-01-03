@@ -11,7 +11,7 @@
     <style>font{vertical-align:baseline!important;}</style>
 </head>
 <body class="layui-layout-body" style="overflow-y:visible;background: #fff;">
-<form class="layui-form">
+<div class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 1rem;width: 15rem;">
             <input type="text" placeholder="请输入昵称,OPENID,用户ID" class="layui-input" id="keyword">
@@ -20,7 +20,7 @@
             <a class="layui-btn  layui-btn-normal" id="search">搜索</a>
         </div>
     </blockquote>
-</form>
+</div>
 <table class="layui-hide" id="table" lay-filter="table"></table>
 <div id="recharge" class="layui-form" style="display: none;margin:1rem 3rem;">
   <div class="layui-form-item">
@@ -89,8 +89,8 @@ layui.use(['table','form','layer'], function(){
     ,cellMinWidth: 80 //全局定义常规单元格的最小宽度
     ,height: 'full-120',
     page: true,
-    limits: [15, 25, 45, 60],
-    limit: 15
+    limits: [14, 25, 45, 60],
+    limit: 14
     ,cols: [[
     //align属性是文字在列表中的位置 可选参数left center right
     //sort属性是排序功能
@@ -176,6 +176,11 @@ $('#search').click(function(){
                 }
             });
       })
+})
+$(document).on('keydown', function(e){
+    if(e.keyCode == 13){
+        $('#search').click();
+    }
 })
 </script>
 </html>
