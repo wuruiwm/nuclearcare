@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 12:03:47
+ * @LastEditTime : 2020-01-03 13:49:31
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -219,6 +219,7 @@ function set_token($user_id){
 }
 //获取token
 function get_token(){
+    request()->header('token') || api_json(500,'请传入token');
     $member_id = cache(request()->header('token'));
     !empty($member_id) || api_json(500,'登陆失效,请重试');
 	return $member_id;

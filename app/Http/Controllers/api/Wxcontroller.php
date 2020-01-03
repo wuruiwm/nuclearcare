@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-02 15:48:54
+ * @LastEditTime : 2020-01-03 14:21:06
  */
 
 namespace App\Http\Controllers\api;
@@ -70,24 +70,6 @@ class WxController extends BaseController
     }
     public function notify(){
         $result = (array)simplexml_load_string(file_get_contents('php://input'), 'SimpleXMLElement', LIBXML_NOCDATA);
-        $result = \json_decode('{
-            "appid": "wxcd417936b51ed32a",
-            "bank_type": "CFT",
-            "cash_fee": "1",
-            "fee_type": "CNY",
-            "is_subscribe": "N",
-            "mch_id": "1455955802",
-            "nonce_str": "9f5100656124dc46b0e8079ff7371a12",
-            "openid": "oNAkT0TIhlFTooQwClBfeg3Cy5qU",
-            "out_trade_no": "RE2020010221732",
-            "result_code": "SUCCESS",
-            "return_code": "SUCCESS",
-            "sign": "A3143C4E45739539284AD8C7E856329C",
-            "time_end": "20191014110014",
-            "total_fee": "1",
-            "trade_type": "JSAPI",
-            "transaction_id": "4200000418201910141673010178"
-        }',true);
         if(!empty($result['result_code']) && $result['result_code'] == "SUCCESS") {
             substr($result['out_trade_no'],0,2) != 'RE' || $this->re($result);
         }
