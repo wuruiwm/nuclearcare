@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 15:20:43
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 11:49:56
+ * @LastEditTime : 2020-01-03 16:41:21
  */
 
 use Illuminate\Http\Request;
@@ -39,6 +39,7 @@ Route::group(['namespace' => 'api'],function(){
     //服务
     Route::get('service','ServiceController@list');
     //充值
+    Route::get('recharge/list','MemberController@recharge_list');
     Route::post('recharge','MemberController@recharge');
     //优惠券
     Route::get('coupon/detail','CouponController@detail');
