@@ -19,7 +19,7 @@
     </blockquote>
 </form>
 <table class="layui-hide" id="table" lay-filter="table"></table>
-<div id="edit" class="layui-form" style="display: none;margin:1rem 3rem;">
+<div id="edit" class="layui-form layui-form-pane" style="display: none;margin:1rem 3rem;">
     <div class="layui-form-item">
         <label class="layui-form-label">轮播图图片</label>
           <div class="layui-input-block">
@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="layui-form-item img" style="display: none;">
-    <label class="layui-form-label"></label>
+    <label class="layui-form-label">图片预览</label>
     <div class="layui-input-block">
         <img src="" alt="" id="img_show" style="width: 355.55px;height: 200px;">
     </div>

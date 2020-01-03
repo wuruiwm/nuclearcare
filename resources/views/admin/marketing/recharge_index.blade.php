@@ -19,7 +19,7 @@
     </blockquote>
 </form>
 <table class="layui-hide" id="table" lay-filter="table"></table>
-<div id="edit" class="layui-form" style="display: none;margin:1rem 3rem;">
+<div id="edit" class="layui-form layui-form-pane" style="display: none;margin:1rem 3rem;">
   <div class="layui-form-item">
     <label class="layui-form-label">满多少</label>
     <div class="layui-input-block">

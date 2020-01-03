@@ -29,7 +29,7 @@
     </blockquote>
 </div>
 <table class="layui-hide" id="table" lay-filter="table"></table>
-<div id="edit" class="layui-form" style="display: none;margin:1rem 3rem;">
+<div id="edit" class="layui-form layui-form-pane" style="display: none;margin:1rem 3rem;">
   <div class="layui-form-item img" style="display: none;">
     <label class="layui-form-label"></label>
     <div class="layui-input-block">

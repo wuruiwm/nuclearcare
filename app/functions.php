@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-02 13:42:26
+ * @LastEditTime : 2020-01-03 12:03:47
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -60,6 +60,11 @@ function array_date(&$data = [],$fields = ['create_time','update_time'],$date = 
 			$data[$k]->$field = date($date,$v->$field);
 		}
 	}
+}
+function find_date(&$data = [],$fields = ['create_time','update_time'],$date = 'Y-m-d H:i:s'){
+	foreach($fields as $field){
+		$data->$field = date($date,$data->$field);
+    }
 }
 //获取id，通常用于删除
 function delete_id($id){

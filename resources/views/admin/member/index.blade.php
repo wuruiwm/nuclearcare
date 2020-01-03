@@ -22,7 +22,7 @@
     </blockquote>
 </div>
 <table class="layui-hide" id="table" lay-filter="table"></table>
-<div id="recharge" class="layui-form" style="display: none;margin:1rem 3rem;">
+<div id="recharge" class="layui-form layui-form-pane" style="display: none;margin:1rem 3rem;">
   <div class="layui-form-item">
     <label class="layui-form-label">操作</label>
     <div class="layui-input-block">
