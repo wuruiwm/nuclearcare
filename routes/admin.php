@@ -172,10 +172,17 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     });
     //营销管理
     Route::group(['prefix'=>'marketing','middleware' => 'permission:marketing'],function(){
+        //充值优惠
         Route::get('recharge_index','MarketingController@recharge_index')->name('admin.marketing.recharge')->middleware('permission:marketing.recharge.index');
         Route::get('recharge_list','MarketingController@recharge_list')->name('admin.marketing.recharge.list')->middleware('permission:marketing.recharge.index');
         Route::post('recharge_delete','MarketingController@recharge_delete')->name('admin.marketing.recharge.delete')->middleware('permission:marketing.recharge.delete');
         Route::post('recharge_create','MarketingController@recharge_create')->name('admin.marketing.recharge.create')->middleware('permission:marketing.recharge.create');
         Route::post('recharge_edit','MarketingController@recharge_edit')->name('admin.marketing.recharge.edit')->middleware('permission:marketing.recharge.edit');
+        //优惠券管理
+        Route::get('coupon_index','MarketingController@coupon_index')->name('admin.marketing.coupon')->middleware('permission:marketing.coupon.index');
+        Route::get('coupon_list','MarketingController@coupon_list')->name('admin.marketing.coupon.list')->middleware('permission:marketing.coupon.index');
+        Route::post('coupon_delete','MarketingController@coupon_delete')->name('admin.marketing.coupon.delete')->middleware('permission:marketing.coupon.delete');
+        Route::any('coupon_create','MarketingController@coupon_create')->name('admin.marketing.coupon.create')->middleware('permission:marketing.coupon.create');
+        Route::any('coupon_edit','MarketingController@coupon_edit')->name('admin.marketing.coupon.edit')->middleware('permission:marketing.coupon.edit');
     });
 });

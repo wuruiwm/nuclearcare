@@ -26,7 +26,7 @@
         <button type="button" class="layui-btn" id="img">
           <i class="layui-icon">&#xe67c;</i>上传图片
         </button>
-        <span style="color: red;">*排序的数字越大越靠前</span>
+        <span style="color: red;">*推荐图片比例为380*750</span>
     </div>
   </div>
   <div class="layui-form-item img" style="display: none;">
@@ -39,6 +39,7 @@
     <label class="layui-form-label">排序</label>
     <div class="layui-input-block">
       <input type="text" placeholder="数字越大越靠前" class="layui-input" value="0" id="sort">
+      <span style="color: red;">*排序的数字越大越靠前</span>
     </div>
   </div>
   <div class="layui-form-item">

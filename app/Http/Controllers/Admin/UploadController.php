@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 11:31:22
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-02 17:32:27
+ * @LastEditTime : 2020-01-03 09:21:59
  */
 namespace App\Http\Controllers\Admin;
 
@@ -30,13 +30,9 @@ class UploadController extends BaseController
         is_dir($path) || mkdir($path,0777,true) || msg(0,'创建文件夹失败');
         $path .= $name;
         $img = Image::make($request->file('file'));
-        if($img->filesize() > 204800){
-            $width = $img->width() * 0.3;
-            $height = $img->height() * 0.3;
-            $img->resize($width,$height)->save($path);
-        }else{
-            $img->save($path);
-        }
+        $width = $img->width() * 0.3;
+        $height = $img->height() * 0.3;
+        $img->resize(750,380)->save($path);
         showjson(['status'=>1,'msg'=>'上传成功','path'=>str_replace(public_path(),'',$path)]);
     }
 }
