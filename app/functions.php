@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-04 14:57:53
+ * @LastEditTime : 2020-01-04 17:18:16
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -219,9 +219,9 @@ function set_token($user_id){
 }
 //获取token
 function get_token(){
-    request()->header('token') || api_json(500,'请传入token');
+    request()->header('token') || api_json(101,'请传入token');
     $member_id = cache(request()->header('token'));
-    !empty($member_id) || api_json(500,'登陆失效,请重试');
+    !empty($member_id) || api_json(101,'登陆失效,请重试');
 	return $member_id;
 }
 //用于微信支付转换认证的信息用的
