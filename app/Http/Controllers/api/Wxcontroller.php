@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 14:28:32
+ * @LastEditTime : 2020-01-03 17:21:16
  */
 
 namespace App\Http\Controllers\api;
@@ -37,7 +37,7 @@ class WxController extends BaseController
         $token = set_token($member['id']);
         $member['token'] = $token['token'];
         $member['token_time'] = $token['token_time'];
-        $member['coupon_total'] = DB::table('coupon_log')->where('member_id',$member['id'])->where('expire_time','>=',time())->count();
+        $member['coupon_total'] = DB::table('coupon_log')->where('member_id',$member['id'])->where('statuc',0)->where('expire_time','>=',time())->count();
         api_json(200,'登陆成功',$member);
     }
     public function mobiledecrypt(Request $request){

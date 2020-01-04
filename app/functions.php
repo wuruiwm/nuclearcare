@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 13:49:31
+ * @LastEditTime : 2020-01-04 14:57:53
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -290,5 +290,80 @@ function post_url($post_data, $url){
 //把xml转换成array
 function xml_to_array($xml){
     return simplexml_load_string($xml,'SimpleXMLElement',LIBXML_NOCDATA);
+}
+//订单里所有的服务 形成一个数组，返回，使用in查询，性能更佳
+function service_in_arr($arr){
+    $service = [];
+    foreach ($arr as $v1) {
+        !(empty($v1['standard']) || !is_numeric($v1['standard'])) || api_json(500,"请传入正确的标准服务");
+        $service[] = intval($v1['standard']);
+        $additional_arr = array_filter(explode(',',$v1['additional']));
+        foreach ($additional_arr as $v2) {
+            is_numeric($v2) || api_json(500,"请传入正确的附加服务");
+            $service[] = intval($v2);
+        }
+    }
+    return $service;
+}
+//get查询结果对象转二维数组
+function ob_to_array($ob){
+    !empty($ob) || api_json(500,"选择的服务不能为空");
+    $ob->toArray();
+    $data = [];
+    foreach ($ob as $v) {
+        $data[] = (array)$v;
+    }
+    return $data;
+}
+//获取订单总价
+function order_total_price($data,$service){
+    foreach ($service as $k => $v) {
+        $service[$v['id']] = $v;
+        unset($service[$k]);
+    }
+    $total_price = 0;
+    foreach ($data as $v1) {
+        if(!empty($service[$v1['standard']])){
+            $total_price += $service[$v1['standard']]['price'];
+        }else{
+            api_json(500,"请传入正确的标准服务");
+        }
+        $additional_arr = array_filter(explode(',',$v1['additional']));
+        foreach ($additional_arr as $v2) {
+            empty($service[$v2]) || $total_price += $service[$v2]['price'];
+        }
+    }
+    return $total_price;
+}
+//获取插入order_service的数组
+function order_service_arr($data,$service,$order_id){
+    foreach ($service as $k => $v) {
+        $service[$v['id']] = $v;
+        unset($service[$k]);
+    }
+    $array = [];
+    foreach ($data as $v1) {
+        $order_service = [];
+        $order_service['standard_service_id'] = $service[$v1['standard']]['id'];
+        $order_service['standard_service_title'] = $service[$v1['standard']]['title'];
+        $order_service['standard_service_price'] = $service[$v1['standard']]['price'];
+        $additional_arr = array_filter(explode(',',$v1['additional']));
+        $additional = [];
+        foreach ($additional_arr as $v2) {
+            $additional_v = [];
+            if(!empty($service[$v2])){
+                $additional_v['id'] = $service[$v2]['id'];
+                $additional_v['title'] = $service[$v2]['title'];
+                $additional_v['price'] = $service[$v2]['price'];
+            }
+            $additional[] = $additional_v; 
+        }
+        $order_service['additional'] = json_encode($additional);
+        $order_service['order_id'] = $order_id;
+        $order_service['create_time'] = time();
+        $order_service['update_time'] = time();
+        $array[] = $order_service;
+    }
+    return $array;
 }
 ?>
