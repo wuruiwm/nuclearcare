@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-04 15:48:07
+ * @LastEditTime : 2020-01-06 11:23:32
  */
 
 namespace App\Http\Controllers\api;
@@ -14,11 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\Member;
+use App\Models\Wx;
 
 class OrderController extends BaseController
 {
     public function create(Request $request){
-        $member_id = get_token();
+        $member_id = $request->get('member_id');
         $rule = [
             'type'=>'required|in:1,2',
             'name'=>'required',
@@ -46,7 +47,7 @@ class OrderController extends BaseController
         $data['total_price'] = order_total_price($service,$service_arr);
         $data['member_id'] = $member_id;
         $data['ordersn'] = Order::create_ordersn();
-        $data['remark'] = $request->input('remark');
+        !empty($data['remark'] = $request->input('remark')) || $data['remark'] = '';
         $data['payable_price'] = $data['total_price'];
         $data['update_time'] = time();
         $data['create_time'] = time();
@@ -102,5 +103,23 @@ class OrderController extends BaseController
             DB::rollBack();
             api_json(500,'提交订单失败,请重试');
         }
+    }
+    public function pay(Request $request){
+        $member_id = $request->get('member_id');
+        !empty($id = get_id($request->input('id'))) || api_json(500,"请传入订单id");
+        !empty($order = Order::from('order as o')
+        ->join('member as m','o.member_id','=','m.id')
+        ->where('o.id',$id)
+        ->where('o.pay_type',2)
+        ->where('o.status',0)
+        ->where('o.member_id',$member_id)
+        ->select(['o.payable_price','o.ordersn','m.openid'])
+        ->first()) || api_json(500,"订单异常,请重试");
+        api_json(200,"获取支付参数成功",Wx::pay($order->ordersn,$order->payable_price,$order->openid));
+    }
+    public function list(Request $request){
+        $member_id = $request->get('member_id');
+        Order::orderBy('id','desc')
+        ->where('member_id',$member_id);
     }
 }

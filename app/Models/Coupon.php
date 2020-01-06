@@ -17,7 +17,7 @@ class Coupon extends Base
 {
     protected $table = 'coupon';//定义表名
     public static function list($number,$limit){
-        $model = self::orderBy('id','asc');
+        $model = self::orderBy('id','desc');
         $count = $model->count();
         $data = $model->offset($number)
         ->limit($limit)

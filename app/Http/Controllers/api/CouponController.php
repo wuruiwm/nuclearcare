@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-03 11:50:11
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 14:28:15
+ * @LastEditTime : 2020-01-06 11:02:10
  */
 namespace App\Http\Controllers\api;
 
@@ -27,7 +27,7 @@ class CouponController extends BaseController
         api_json(200,'获取优惠券详情成功',$data);
     }
     public function receive(Request $request){
-        $member_id = get_token();
+        $member_id = $request->get('member_id');
         $id = get_id($request->input('id'));
         !empty($id) || api_json(500,'请传入正确的id');
         $coupon = Coupon::where('start_time','<=',time())->where('end_time','>=',time())->find($id);

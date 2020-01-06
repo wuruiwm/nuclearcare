@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-28 14:04:50
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-31 15:00:03
+ * @LastEditTime : 2020-01-06 11:21:42
  */
 namespace App\Models;
 
@@ -15,7 +15,7 @@ class Service extends Base
 {
     protected $table = 'service';//定义表名
     public static function list($number,$limit,$type = 0){
-        $model = self::orderBy('id','asc')->where(function($query)use($type){
+        $model = self::orderBy('id','desc')->where(function($query)use($type){
             !($type == 1 || $type == 2) || $query->where('type',$type);
         });
         $count = $model->count();

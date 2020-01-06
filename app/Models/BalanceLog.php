@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-02 10:44:43
+ * @LastEditTime : 2020-01-06 11:20:42
  */
 
 namespace App\Models;
@@ -25,7 +25,7 @@ class BalanceLog extends Base
         return self::insert($data);
     }
     public static function list($number,$limit,$keyword = ''){
-        $model = self::from("balance_log as l")->orderBy('id','asc')
+        $model = self::from("balance_log as l")->orderBy('id','desc')
         ->join('member as m','l.member_id','=','m.id')
         ->where(function($query)use($keyword){
             empty($keyword) || $query->orwhere('m.nickname','like','%'.$keyword.'%')

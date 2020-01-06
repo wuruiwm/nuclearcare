@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 15:20:43
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-04 16:07:41
+ * @LastEditTime : 2020-01-06 11:07:03
  */
 
 use Illuminate\Http\Request;
@@ -40,11 +40,15 @@ Route::group(['namespace' => 'api'],function(){
     Route::get('service','ServiceController@list');
     //充值
     Route::get('recharge/list','MemberController@recharge_list');
-    Route::post('recharge','MemberController@recharge');
+    Route::post('recharge','MemberController@recharge')->middleware('member.auth');
     //优惠券
     Route::get('coupon/detail','CouponController@detail');
-    Route::post('coupon/receive','CouponController@receive');
+    Route::post('coupon/receive','CouponController@receive')->middleware('member.auth');
     //订单
-    Route::post('order/create','OrderController@create');
-    Route::get('order/base','MemberController@order_base');
+    Route::post('order/create','OrderController@create')->middleware('member.auth');
+    Route::get('order/base','MemberController@order_base')->middleware('member.auth');
+    Route::get('order/pay','OrderController@pay')->middleware('member.auth');
+    Route::get('order/list','OrderController@list')->middleware('member.auth');
+    //图片上传
+    Route::post('upload/image','UploadController@image');
 });

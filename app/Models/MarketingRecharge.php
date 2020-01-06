@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-02 15:09:55
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 16:46:28
+ * @LastEditTime : 2020-01-06 11:21:11
  */
 
 namespace App\Models;
@@ -16,7 +16,7 @@ class MarketingRecharge extends Base
 {
     protected $table = 'marketing_recharge';//定义表名
     public static function list($number,$limit){
-        $model = self::orderBy('id','asc');
+        $model = self::orderBy('id','desc');
         $count = $model->count();
         $data = $model->offset($number)
         ->limit($limit)
@@ -24,7 +24,7 @@ class MarketingRecharge extends Base
         return ['data'=>$data,'count'=>$count];
     }
     public static function api_list(){
-        $model = self::orderBy('full','asc');
+        $model = self::orderBy('full','desc');
         $count = $model->count();
         $data = $model->select(['id','full','give'])->get();
         return ['data'=>$data,'count'=>$count];

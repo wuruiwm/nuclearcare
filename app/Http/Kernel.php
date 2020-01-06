@@ -1,9 +1,18 @@
 <?php
+/*
+ * @Author: 傍晚升起的太阳
+ * @QQ: 1250201168
+ * @Email: wuruiwm@qq.com
+ * @Date: 2019-12-27 15:20:43
+ * @LastEditors  : 傍晚升起的太阳
+ * @LastEditTime : 2020-01-06 10:51:46
+ */
 
 namespace App\Http;
 
 use App\Http\Middleware\OperateLog;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\MemberAuth;
 
 class Kernel extends HttpKernel
 {
@@ -67,6 +76,7 @@ class Kernel extends HttpKernel
         'wechat.oauth' => \Overtrue\LaravelWeChat\Middleware\OAuthAuthenticate::class,
 
         'operate.log' => OperateLog::class,
+        'member.auth'=> MemberAuth::class,
     ];
 
     /**

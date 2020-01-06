@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 17:21:16
+ * @LastEditTime : 2020-01-06 10:05:33
  */
 
 namespace App\Http\Controllers\api;
@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\Member;
 use App\Models\RechargeOrder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Order;
 
 class WxController extends BaseController
 {
@@ -37,7 +38,11 @@ class WxController extends BaseController
         $token = set_token($member['id']);
         $member['token'] = $token['token'];
         $member['token_time'] = $token['token_time'];
-        $member['coupon_total'] = DB::table('coupon_log')->where('member_id',$member['id'])->where('status',0)->where('expire_time','>=',time())->count();
+        $member['coupon_total'] = DB::table('coupon_log')
+        ->where('member_id',$member['id'])
+        ->where('status',0)
+        ->where('expire_time','>=',time())
+        ->count();
         api_json(200,'登陆成功',$member);
     }
     public function mobiledecrypt(Request $request){
@@ -73,6 +78,7 @@ class WxController extends BaseController
         $result = (array)simplexml_load_string(file_get_contents('php://input'), 'SimpleXMLElement', LIBXML_NOCDATA);
         if(!empty($result['result_code']) && $result['result_code'] == "SUCCESS") {
             substr($result['out_trade_no'],0,2) != 'RE' || $this->re($result);
+            substr($result['out_trade_no'],0,2) != 'SE' || $this->se($result);
         }
         echo '<xml>
         <return_code><![CDATA[SUCCESS]]></return_code>
@@ -95,5 +101,14 @@ class WxController extends BaseController
                 DB::rollBack();
             }
         }
+    }
+    protected function se($result){
+        Order::where('ordersn',$result['out_trade_no'])
+        ->update([
+            'status'=>1,
+            'pay_time'=>time(),
+            'update_time'=>time(),
+            'wx_transaction_id'=>$result['transaction_id']
+        ]);
     }
 }

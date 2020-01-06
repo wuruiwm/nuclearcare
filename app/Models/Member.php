@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-02 10:28:52
+ * @LastEditTime : 2020-01-06 11:21:32
  */
 
 namespace App\Models;
@@ -35,7 +35,8 @@ class Member extends Base
         return $member;
     }
     public static function list($number,$limit,$keyword = ''){
-        $model = self::orderBy('id','asc')->where(function($query)use($keyword){
+        $model = self::orderBy('id','desc')
+        ->where(function($query)use($keyword){
             empty($keyword) || $query->orwhere('nickname','like','%'.$keyword.'%')
             ->orwhere('id',$keyword)
             ->orwhere('openid','like','%'.$keyword.'%');

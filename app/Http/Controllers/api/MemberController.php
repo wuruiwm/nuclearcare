@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 class MemberController extends BaseController
 {
     public function recharge(Request $request){
-        $member_id = get_token();
+        $member_id = $request->get('member_id');
         $price = $request->input('price');
         !(empty($price) || !is_numeric($price)) || api_json(500,'请输入正确的金额');
         $price = round($price,2);
@@ -33,7 +33,7 @@ class MemberController extends BaseController
         api_json(200,'获取充值优惠列表成功',$data,$count);
     }
     public function order_base(){
-        $member_id = get_token();
+        $member_id = $request->get('member_id');
         !empty($member = Member::get_member($member_id)) || api_json(500,'用户数据错误');
         $coupon_log_list = DB::table('coupon_log')
         ->where('member_id',$member['id'])
