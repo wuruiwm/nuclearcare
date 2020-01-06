@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 14:51:44
+ * @LastEditTime : 2020-01-06 15:48:07
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -97,13 +97,13 @@ function http301($url = ''){
 	exit();
 }
 //api接口返回
-function api_json($code = 200,$msg = '请求成功',$data = [],$count = 0){
+function api_json($code = 200,$msg = '请求成功',$data = [],$count = ''){
 	$array = [
 		'code'=>$code,
 		'msg'=>$msg
 	];
 	empty($data) || $array['data'] = $data;
-	empty($count) || $array['count'] = $count;
+	(empty($count) && !is_numeric($count)) || $array['count'] = $count;
 	showjson($array);
 }
 //将图片路径转换成前端可以访问的url
@@ -367,7 +367,8 @@ function order_service_arr($data,$service,$order_id){
     return $array;
 }
 //将二维数组的id作为值，形成一个新的索引数组return
-function array_in($arr){
+function array_in($arr = []){
+    $id_arr = [];
     foreach ($arr as $v) {
         $id_arr[] = $v['id'];
     }
@@ -395,10 +396,16 @@ function order_service_list_price_or_title($order,$order_service){
     }
     return $order;
 }
+//图片路径的数组转成url数组返回
 function img_path_url_arr($arr){
     foreach ($arr as $k => $v) {
         $arr[$k] = img_path_url($v);
     }
     return $arr;
+}
+function additional_json_to_arr(&$order_service){
+    foreach ($order_service as $k => $v) {
+        $order_service[$k]->additional = json_decode($v->additional,true);
+    }
 }
 ?>

@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 15:11:44
+ * @LastEditTime : 2020-01-06 16:01:17
  */
 
 namespace App\Http\Controllers\api;
@@ -123,7 +123,15 @@ class OrderController extends BaseController
         extract(page($request->input(),0));
         $member_id = $request->get('member_id');
         $order = Order::orderBy('id','desc')
-        ->where('member_id',$member_id);
+        ->where('status','<>',-1)
+        ->where('member_id',$member_id)->where(function($query)use($request){
+            $status = $request->input('status');
+            if(!empty($status) && is_numeric($status)){
+                $status != 0 || $query->where('status',0);
+                $status != 1 || $query->where('status',1);
+                $status != 2 || $query->where('status',2);
+            }
+        });
         $count = $order->count();
         $order = $order->offset($number)
         ->limit($limit)
@@ -150,10 +158,13 @@ class OrderController extends BaseController
         $order['photos'] = json_decode($order['photos'],true);
         $order['photos'] = img_path_url_arr($order['photos']);
         $order->pay_time = date('Y-m-d H:i:s',$order->pay_time);
-        foreach ($order_service as $k => $v) {
-            $order_service[$k]->additional = json_decode($v->additional,true);
-        }
+        additional_json_to_arr($order_service);
         $order->service = $order_service;
         api_json(200,"获取订单详情成功",$order);
+    }
+    public function cancel(Request $request){
+        $member_id = $request->get('member_id');
+        !empty($id = get_id($request->input('id'))) || api_json(500,"请传入订单id");
+        Order::cancel($id,$member_id);
     }
 }
