@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-04 17:18:16
+ * @LastEditTime : 2020-01-06 14:51:44
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -21,7 +21,7 @@ function data_check($data,$rule,$msg,$is_admin = 1){
 	return $data;
 }
 //获取页码数和条数并校验
-function page($data){
+function page($data,$is_admin = 1){
 	$rule = [
 		'page' => 'required|integer',
 		'limit' => 'required|integer',
@@ -32,7 +32,7 @@ function page($data){
 		'limit.required'=>'每页条数不能为空',
 		'limit.integer'=>'请传入正确的每页条数',
 	];
-	$data = data_check($data,$rule,$msg);
+	$data = data_check($data,$rule,$msg,$is_admin);
 	$data = ['number'=>($data['page'] - 1) * $data['limit'],'limit'=>$data['limit']];
 	return $data;
 }
@@ -365,5 +365,40 @@ function order_service_arr($data,$service,$order_id){
         $array[] = $order_service;
     }
     return $array;
+}
+//将二维数组的id作为值，形成一个新的索引数组return
+function array_in($arr){
+    foreach ($arr as $v) {
+        $id_arr[] = $v['id'];
+    }
+    return $id_arr;
+}
+//用户端订单列表 计算每个鞋子的服务价格 和按前端要求 拼接title
+function order_service_list_price_or_title($order,$order_service){
+    $order_service_tmp = [];
+    foreach ($order_service as $k => $v) {
+        $v->price = $v->standard_service_price;
+        $additional = json_decode($v->additional,true);
+        $v->additional_title = '';
+        foreach ($additional as $k2 => $v2) {
+            $v->price += $v2['price'];
+            $v->additional_title .= $v2['title'] . ' ';
+        }
+        $order_id = $v->order_id;
+        unset($v->order_id);
+        unset($v->additional);
+        unset($v->standard_service_price);
+        $order_service_tmp[$order_id][] = (array)$v;
+    }
+    foreach ($order as $k => $v) {
+        $order[$k]['service'] = $order_service_tmp[$v['id']]; 
+    }
+    return $order;
+}
+function img_path_url_arr($arr){
+    foreach ($arr as $k => $v) {
+        $arr[$k] = img_path_url($v);
+    }
+    return $arr;
 }
 ?>

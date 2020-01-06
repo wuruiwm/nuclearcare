@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 11:23:32
+ * @LastEditTime : 2020-01-06 15:11:44
  */
 
 namespace App\Http\Controllers\api;
@@ -57,7 +57,8 @@ class OrderController extends BaseController
                 empty($request->input('express_name')) || $data['express_name'] = $request->input('express_name');
                 empty($request->input('express_number')) || $data['express_number'] = $request->input('express_number');
             }
-            empty($request->input('photos')) || $data['photos'] = $request->input('photos');
+            !empty($data['photos'] = @json_decode($request->input('photos'),true)) || $data['photos'] = [];
+            $data['photos'] = json_encode($data['photos']);
         }
         DB::beginTransaction();
         try {
@@ -92,6 +93,7 @@ class OrderController extends BaseController
             if($data['payable_price'] == 0){
                 $data['status'] = 1;
                 $data['pay_type'] = 1;
+                $data['pay_time'] = time();
             }else{
                 $data['pay_type'] = 2;
             }
@@ -118,8 +120,40 @@ class OrderController extends BaseController
         api_json(200,"获取支付参数成功",Wx::pay($order->ordersn,$order->payable_price,$order->openid));
     }
     public function list(Request $request){
+        extract(page($request->input(),0));
         $member_id = $request->get('member_id');
-        Order::orderBy('id','desc')
+        $order = Order::orderBy('id','desc')
         ->where('member_id',$member_id);
+        $count = $order->count();
+        $order = $order->offset($number)
+        ->limit($limit)
+        ->select(['id','ordersn','status','payable_price'])
+        ->get();
+        $order_service = DB::table('order_service')
+        ->orderBy('id','asc')
+        ->whereIn('order_id',array_in($order))
+        ->select(['order_id','status','standard_service_title','standard_service_price','additional'])
+        ->get();
+        api_json(200,"获取订单列表成功",order_service_list_price_or_title($order,$order_service),$count);
+    }
+    public function detail(Request $request){
+        $member_id = $request->get('member_id');
+        !empty($id = get_id($request->input('id'))) || api_json(500,"请传入订单id");
+        !empty($order = Order::where('id',$id)
+        ->where('member_id',$member_id)
+        ->select(['id','ordersn','status','name','remark','phone','address','type','is_send','express_name','express_number','photos','total_price','payable_price','coupon_price','pay_time','balance','create_time'])
+        ->first()) || api_json(500,"订单不存在,请重试");
+        !empty($order_service = DB::table('order_service')
+        ->where('order_id',$id)
+        ->select(['status','standard_service_title','standard_service_price','additional'])
+        ->get()) || api_json(500,"订单不存在,请重试");
+        $order['photos'] = json_decode($order['photos'],true);
+        $order['photos'] = img_path_url_arr($order['photos']);
+        $order->pay_time = date('Y-m-d H:i:s',$order->pay_time);
+        foreach ($order_service as $k => $v) {
+            $order_service[$k]->additional = json_decode($v->additional,true);
+        }
+        $order->service = $order_service;
+        api_json(200,"获取订单详情成功",$order);
     }
 }
