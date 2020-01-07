@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 13:31:23
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 16:40:42
+ * @LastEditTime : 2020-01-07 10:07:55
  */
 
 namespace App\Models;
@@ -53,5 +53,16 @@ class Order extends Base
             DB::rollBack();
             !empty($member_id) ? api_json(500,"取消订单失败") : msg(1,'取消订单失败');
         }
+    }
+    public static function list($number,$limit){
+        $model = self::from("order as o")
+        ->orderBy('o.id','desc')
+        ->join('member as m','o.member_id','=','m.id');
+        $count = $model->count();
+        $data = $model->offset($number)
+        ->limit($limit)
+        ->select(['o.id','o.ordersn','o.status','o.name','o.remark','o.phone','o.address','o.type','o.total_price','o.payable_price','o.create_time','o.update_time','m.nickname','m.openid','m.avatar_url'])
+        ->get();
+        return ['data'=>$data,'count'=>$count];
     }
 }

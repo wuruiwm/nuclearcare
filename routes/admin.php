@@ -185,4 +185,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::any('coupon_create','MarketingController@coupon_create')->name('admin.marketing.coupon.create')->middleware('permission:marketing.coupon.create');
         Route::any('coupon_edit','MarketingController@coupon_edit')->name('admin.marketing.coupon.edit')->middleware('permission:marketing.coupon.edit');
     });
+    //订单管理
+    Route::group(['prefix'=>'order','middleware' => 'permission:banner'],function(){
+        Route::get('index','OrderController@index')->name('admin.order')->middleware('permission:order.index');
+        Route::get('list','OrderController@list')->name('admin.order.list')->middleware('permission:order.index');
+    });
 });
