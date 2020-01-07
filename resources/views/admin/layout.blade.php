@@ -75,7 +75,7 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="console" class="layui-this">
-                                <a lay-href="{{route('admin.index')}}">控制台</a>
+                                <a lay-href="{{route('admin.index')}}">主页</a>
                             </dd>
                         </dl>
                     </li>

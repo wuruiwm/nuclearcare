@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-07 13:36:13
+ * @LastEditTime : 2020-01-07 14:16:14
  */
 
 namespace App\Http\Controllers\api;
@@ -77,7 +77,7 @@ class WxController extends BaseController
     public function notify(){
         $result = (array)simplexml_load_string(file_get_contents('php://input'), 'SimpleXMLElement', LIBXML_NOCDATA);
         $log = fopen(__DIR__."/paylog/".date("Ymd").".txt", "a");
-        $txt = json_encode($result);
+        $txt = json_encode($result)."\n\n";
         fwrite($log, $txt);
         fclose($log);
         if(!empty($result['result_code']) && $result['result_code'] == "SUCCESS") {

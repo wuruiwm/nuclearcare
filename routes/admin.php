@@ -189,5 +189,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::group(['prefix'=>'order','middleware' => 'permission:banner'],function(){
         Route::get('index','OrderController@index')->name('admin.order')->middleware('permission:order.index');
         Route::get('list','OrderController@list')->name('admin.order.list')->middleware('permission:order.index');
+        Route::get('see','OrderController@see')->name('admin.order.see')->middleware('permission:order.see');
+        Route::post('service/status','OrderController@service_status')->name('admin.order.service.status')->middleware('permission:order.edit');
     });
 });

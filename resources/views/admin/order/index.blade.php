@@ -57,7 +57,7 @@
 @{{# } }}
 </script>
 <script type="text/html" id="buttons">
-  <a class="layui-btn layui-btn-xs" lay-event="edit">操作</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
 </script>
 <script src="/static/admin/jquery/jquery.min.js"></script>
 <script src="/static/admin/layui/layui.js"></script>
@@ -124,25 +124,16 @@ layui.use(['table','form','layer'], function(){
       //data就是一行的数据
       var data = obj.data;
         if(obj.event === 'edit'){
-          layer.open({
-            type: 1,
-            title:'编辑轮播图',
-            skin: 'layui-layer-rim', //加上边框
-            area: ['50rem;', '30rem;'], //宽高
-            content: $('#edit'),
+          var index = layer.open({
+            type: 2,
+            title:'查看订单',
+            maxmin: true,
+            content: "{{route('admin.order.see')}}?id="+data.id,
           });
+         layer.full(index);
       }
     });
 });
-$('.add').click(function(){
-    layer.open({
-        type: 1,
-        title:'添加轮播图',
-        skin: 'layui-layer-rim', //加上边框
-        area: ['50rem;', '30rem;'], //宽高
-        content: $('#edit'),
-    });
-})
 function hoverOpenImg(){
         var img_show = null;
         $('td img').hover(function () {
