@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 15:48:07
+ * @LastEditTime : 2020-01-07 11:36:15
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -403,9 +403,25 @@ function img_path_url_arr($arr){
     }
     return $arr;
 }
+//附加服务，json转arr
 function additional_json_to_arr(&$order_service){
     foreach ($order_service as $k => $v) {
         $order_service[$k]->additional = json_decode($v->additional,true);
     }
+}
+//利用laravel 单独验证一个字段
+function field_check($field,$rule){
+    $data = [
+        'field'=>$field
+    ];
+    $rule = [
+        'field'=>$rule
+    ];
+    $validator = Illuminate\Support\Facades\Validator::make($data,$rule);
+	if($validator->fails()){    
+        return false;
+	}
+	$data = $validator->validated();
+	return $data['field'];
 }
 ?>

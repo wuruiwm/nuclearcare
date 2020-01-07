@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 13:31:23
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-07 10:07:55
+ * @LastEditTime : 2020-01-07 11:47:25
  */
 
 namespace App\Models;
@@ -54,10 +54,26 @@ class Order extends Base
             !empty($member_id) ? api_json(500,"取消订单失败") : msg(1,'取消订单失败');
         }
     }
-    public static function list($number,$limit){
+    public static function list($number,$limit,$keyword = '',$type = 0,$status = ''){
         $model = self::from("order as o")
         ->orderBy('o.id','desc')
-        ->join('member as m','o.member_id','=','m.id');
+        ->join('member as m','o.member_id','=','m.id')
+        ->where(function($query)use($status){
+            field_check($status,'required|in:-1,0,1,2') === false || $query->orwhere('o.status',$status);
+        })
+        ->where(function($query)use($keyword){
+            if(!empty($keyword)){
+                $query->orwhere('o.ordersn','like','%'.$keyword.'%');
+                $query->orwhere('o.name','like','%'.$keyword.'%');
+                $query->orwhere('o.phone','like','%'.$keyword.'%');
+                $query->orwhere('m.nickname','like','%'.$keyword.'%');
+                $query->orwhere('m.openid','like','%'.$keyword.'%');
+                $query->orwhere('o.member_id',$keyword);
+            }  
+        })
+        ->where(function($query)use($type){
+            !empty($type) && ($type == 1 || $type == 2) && $query->where('o.type',$type);
+        });
         $count = $model->count();
         $data = $model->offset($number)
         ->limit($limit)

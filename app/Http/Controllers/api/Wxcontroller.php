@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:06:05
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 10:05:33
+ * @LastEditTime : 2020-01-07 12:01:18
  */
 
 namespace App\Http\Controllers\api;
@@ -76,6 +76,10 @@ class WxController extends BaseController
     }
     public function notify(){
         $result = (array)simplexml_load_string(file_get_contents('php://input'), 'SimpleXMLElement', LIBXML_NOCDATA);
+        $log = fopen(__DIR__."/log_".date("Ymd").".txt", "a");
+        $txt = json_encode($result);
+        fwrite($log, $txt);
+        fclose($log);
         if(!empty($result['result_code']) && $result['result_code'] == "SUCCESS") {
             substr($result['out_trade_no'],0,2) != 'RE' || $this->re($result);
             substr($result['out_trade_no'],0,2) != 'SE' || $this->se($result);

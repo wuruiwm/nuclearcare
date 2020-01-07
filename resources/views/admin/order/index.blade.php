@@ -13,41 +13,31 @@
 <body class="layui-layout-body" style="overflow-y:visible;background: #fff;">
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
-        <div class="layui-inline" style="margin-left: 2rem;">
-            <a class="layui-btn add">添加轮播图</a>
+        <div class="layui-inline" style="margin-left: 1rem;width: 22rem;">
+            <input type="text" placeholder="请输入订单号,姓名,手机号,昵称,OPENID,用户ID" class="layui-input" id="keyword">
+        </div>
+        <div class="layui-inline" style="margin-left: 1rem;">
+            <select id="search_status">
+                <option value=" ">请选择订单状态</option>
+                <option value="0">待付款</option>
+                <option value="1">进行中</option>
+                <option value="2">已完成</option>
+                <option value="-1">已取消</option>
+            </select>
+        </div>
+        <div class="layui-inline" style="margin-left: 1rem;">
+            <select id="search_type">
+                <option value="0">请选择服务类型</option>
+                <option value="1">店内</option>
+                <option value="2">邮寄</option>
+            </select>
+        </div>
+        <div class="layui-inline" style="margin-left: 1rem;">
+            <a class="layui-btn  layui-btn-normal" id="search">搜索</a>
         </div>
     </blockquote>
 </form>
 <table class="layui-hide" id="table" lay-filter="table"></table>
-<div id="edit" class="layui-form layui-form-pane" style="display: none;margin:1rem 3rem;">
-    <div class="layui-form-item">
-        <label class="layui-form-label">轮播图图片</label>
-          <div class="layui-input-block">
-        <button type="button" class="layui-btn" id="img">
-          <i class="layui-icon">&#xe67c;</i>上传图片
-        </button>
-        <span style="color: red;">*推荐图片比例为380*750</span>
-    </div>
-  </div>
-  <div class="layui-form-item img" style="display: none;">
-    <label class="layui-form-label">图片预览</label>
-    <div class="layui-input-block">
-        <img src="" alt="" id="img_show" style="width: 355.55px;height: 200px;">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">排序</label>
-    <div class="layui-input-block">
-      <input type="text" placeholder="数字越大越靠前" class="layui-input" value="0" id="sort">
-      <span style="color: red;">*排序的数字越大越靠前</span>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button class="layui-btn" lay-filter="formDemo" id="submit">立即提交</button>
-    </div>
-  </div>
-</div>
 <script type="text/html" id="avatar_url">
   <div>
     <a href="#">
@@ -55,9 +45,19 @@
     </a>
   </div>
 </script>
+<script type="text/html" id="status">
+@{{# if(d.status == 0){ }}
+    <span style="color:red;">待付款</span>
+@{{# }else if(d.status == 1){ }}
+    <span style="color:#ffbf00;">进行中</span>
+@{{# }else if(d.status == 2){ }}
+    <span style="color:green;">已完成</span>
+@{{# }else if(d.status == -1){ }}
+    <span style="color:#808080;">已取消</span>
+@{{# } }}
+</script>
 <script type="text/html" id="buttons">
-  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">操作</a>
 </script>
 <script src="/static/admin/jquery/jquery.min.js"></script>
 <script src="/static/admin/layui/layui.js"></script>
@@ -103,8 +103,14 @@ layui.use(['table','form','layer'], function(){
       {field:'openid',title: 'OPENID',align: 'center'},
       {field:'name',title: '姓名',align: 'center'},
       {field:'phone',title: '手机号',align: 'center'},
-      {field:'address',title: '订单状态',align: 'center'},
-      {field:'status',title: '订单状态',align: 'center'},
+      {field:'type',title: '服务类型',align: 'center',templet:function(d){
+          if(d.type == 1){
+              return '店内';
+          }else if(d.type == 2){
+              return '邮寄';
+          }
+      }},
+      {field:'status',title: '订单状态',align: 'center',templet:"#status"},
       {field:'create_time', title: '创建时间',align: 'center'},
       {field:'update_time', title: '最后修改时间',align: 'center'},
       {fixed:'right',title: '操作', align:'center', toolbar: '#buttons'}
@@ -115,15 +121,9 @@ layui.use(['table','form','layer'], function(){
   });
   //监听
   table.on('tool(table)', function(obj){
-      console.log(obj);
       //data就是一行的数据
       var data = obj.data;
         if(obj.event === 'edit'){
-          id = data.id;
-          img = data.img_path;
-          $('#sort').val(data.sort);
-          $('.img').show();
-          $('#img_show').attr('src',data.img_path);
           layer.open({
             type: 1,
             title:'编辑轮播图',
@@ -135,10 +135,6 @@ layui.use(['table','form','layer'], function(){
     });
 });
 $('.add').click(function(){
-    id = 0;
-    $('#sort').val('0');
-    $('.img').hide();
-    $('#img_show').attr('src','');
     layer.open({
         type: 1,
         title:'添加轮播图',
@@ -147,7 +143,7 @@ $('.add').click(function(){
         content: $('#edit'),
     });
 })
-function hoverOpenImg() {
+function hoverOpenImg(){
         var img_show = null;
         $('td img').hover(function () {
             var kd = $(this).width();
@@ -162,5 +158,24 @@ function hoverOpenImg() {
             layer.close(img_show);
         });
 }
+$('#search').click(function(){
+      //传递where条件实现搜索，并且重载表格数据
+      layui.use('table', function(){
+            var table = layui.table;
+            table.reload('table', { //表格的id
+                url:"{{route('admin.order.list')}}",
+                where:{
+                    'status':$('#search_status').val(),
+                    'keyword':$('#keyword').val(),
+                    'type':$('#search_type').val(),
+                }
+            });
+      })
+})
+$(document).on('keydown', function(e){
+    if(e.keyCode == 13){
+        $('#search').click();
+    }
+})
 </script>
 </html>
