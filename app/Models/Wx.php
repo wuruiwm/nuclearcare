@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-02 13:44:46
+ * @LastEditTime : 2020-01-07 13:39:52
  */
 
 namespace App\Models;
@@ -18,7 +18,7 @@ class Wx extends Base
             'body'=>config('wx.body'),
             'mch_id'=>config('wx.MCHID'),
             'nonce_str'=>md5(mt_rand(1,9999).time()),
-            'notify_url'=>domain_name().'/api/pay/notify',
+            'notify_url'=>domain_name().'/api/wx/notify',
             'openid'=>$openid,
             'out_trade_no'=>$ordersn,
             'spbill_create_ip'=>'8.8.8.8',
