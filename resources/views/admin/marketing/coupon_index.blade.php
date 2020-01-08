@@ -61,19 +61,19 @@ layui.use(['table','form','layer'], function(){
     //title是这列的标题
     //field是取接口的字段值
     //width是宽度，不填则自动根据值的长度
-      {field:'id', title: 'ID',align: 'center',width:80},
+      {field:'id', title: 'ID',align: 'center',width:100},
       {field:'face_value',title: '面值',align: 'center',width:100},
-      {field:'validity_time',title: '领取后有效期',align: 'center',width:180,templet:function(d){
+      {field:'validity_time',title: '领取后有效期',align: 'center',width:150,templet:function(d){
           return d.validity_time + '天';
       }},
-      {field:'full',title: '券满多少可用',align: 'center',width:180},
-      {field:'total',title: '优惠券总数',align: 'center',width:180},
-      {field:'receive_num',title: '已领取数',align: 'center',width:180},
+      {field:'full',title: '券满多少可用',align: 'center',width:150},
+      {field:'total',title: '优惠券总数',align: 'center',width:150},
+      {field:'receive_num',title: '已领取数',align: 'center',width:150},
       {field:'start_time',title: '开始领取日期',align: 'center',width:180},
       {field:'end_time',title: '结束领取日期',align: 'center',width:180},
       {field:'create_time', title: '创建时间',align: 'center',width:180},
       {field:'update_time', title: '最后修改时间',align: 'center',width:180},
-      {fixed:'right',title: '操作', align:'center', toolbar: '#buttons',width:150}
+      {fixed:'right',title: '操作', align:'center', toolbar: '#buttons'}
     ]]
   });
   form.on('switch(is_status)', function (obj) {

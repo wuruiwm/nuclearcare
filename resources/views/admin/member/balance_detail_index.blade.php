@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>会员列表</title>
+    <title>余额明细</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -76,15 +76,15 @@ layui.use(['table','form','layer'], function(){
     //title是这列的标题
     //field是取接口的字段值
     //width是宽度，不填则自动根据值的长度
-      {field:'id', title: 'ID',align: 'center'},
-      {field:'avatar_url',title: '会员头像',align: 'center',templet:'#avatar'},
-      {field:'openid',title: 'OPENID',align: 'center'},
-      {field:'nickname',title: '会员昵称',align: 'center'},
-      {field:'type', title: '操作',align: 'center',templet:'#type'},
-      {field:'price',title: '金额',align: 'center'},
+      {field:'id', title: 'ID',align: 'center',width:100},
+      {field:'avatar_url',title: '会员头像',align: 'center',templet:'#avatar',width:100},
+      {field:'openid',title: 'OPENID',align: 'center',width:300},
+      {field:'nickname',title: '会员昵称',align: 'center',width:200},
+      {field:'type', title: '操作',align: 'center',templet:'#type',width:100},
+      {field:'price',title: '金额',align: 'center',width:100},
       {field:'remark', title: '备注',align: 'center'},
-      {field:'create_time', title: '创建时间',align: 'center'},
-      {field:'update_time', title: '最后修改时间',align: 'center'},
+      {field:'create_time', title: '创建时间',align: 'center',width:180},
+      {field:'update_time', title: '最后修改时间',align: 'center',width:180},
     ]],
     done: function () {
         hoverOpenImg();

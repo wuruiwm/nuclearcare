@@ -97,20 +97,26 @@ layui.use(['table','form','layer'], function(){
     //title是这列的标题
     //field是取接口的字段值
     //width是宽度，不填则自动根据值的长度
-      {field:'ordersn', title: '订单号',align: 'center'},
-      {field:'avatar_url',title: '微信头像',align: 'center',templet:'#avatar_url'},
-      {field:'nickname',title: '微信昵称',align: 'center'},
-      {field:'openid',title: 'OPENID',align: 'center'},
-      {field:'name',title: '姓名',align: 'center'},
+      {field:'ordersn', title: '订单号',align: 'center',width:150},
+      {field:'avatar_url',title: '微信头像',align: 'center',templet:'#avatar_url',width:100},
+      {field:'nickname',title: '微信昵称',align: 'center',width:150},
+      {field:'openid',title: 'OPENID',align: 'center',width:260},
+      {field:'name',title: '姓名',align: 'center',width:100},
       {field:'phone',title: '手机号',align: 'center'},
-      {field:'type',title: '服务类型',align: 'center',templet:function(d){
+      {field:'type',title: '服务类型',align: 'center',width:100,templet:function(d){
           if(d.type == 1){
               return '店内';
           }else if(d.type == 2){
               return '邮寄';
           }
       }},
-      {field:'status',title: '订单状态',align: 'center',templet:"#status"},
+      {field:'status',title: '订单状态',align: 'center',templet:"#status",width:120},
+      {field:'total_price',title: '总价',align: 'center',templet:function(d){
+          return d.total_price + "元";
+      }},
+      {field:'payable_price',title: '实付价',align: 'center',templet:function(d){
+          return d.payable_price + "元";
+      }},
       {field:'create_time', title: '创建时间',align: 'center'},
       {field:'update_time', title: '最后修改时间',align: 'center'},
       {fixed:'right',title: '操作', align:'center', toolbar: '#buttons'}
