@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-09 14:41:57
+ * @LastEditTime : 2020-01-09 15:23:45
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -424,6 +424,7 @@ function field_check($field,$rule){
 	$data = $validator->validated();
 	return $data['field'];
 }
+//post json
 function curl_post($url='',$postdata='',$options=array()) {
 	$ch=curl_init($url);
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);

@@ -20,6 +20,9 @@
     </div>
 <table class="layui-hide" id="table" lay-filter="table"></table>
 </body>
+<div id="qrcode" style="display:none;">
+    <img src="" style="width:100%;height:100%;">
+</div>
 <script type="text/html" id="buttons">
     <a class="layui-btn layui-btn-xs" lay-event="show">查看优惠券码</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -63,7 +66,7 @@ layui.use(['table','form','layer'], function(){
     //field是取接口的字段值
     //width是宽度，不填则自动根据值的长度
       {field:'id', title: 'ID',align: 'center',width:100},
-      {field:'face_value',title: '面值',align: 'center',width:100},
+      {field:'face_value',title: '面值',align: 'center'},
       {field:'validity_time',title: '领取后有效期',align: 'center',width:150,templet:function(d){
           return d.validity_time + '天';
       }},
@@ -74,7 +77,7 @@ layui.use(['table','form','layer'], function(){
       {field:'end_time',title: '结束领取日期',align: 'center',width:180},
       {field:'create_time', title: '创建时间',align: 'center',width:180},
       {field:'update_time', title: '最后修改时间',align: 'center',width:180},
-      {fixed:'right',title: '操作', align:'center', toolbar: '#buttons'}
+      {fixed:'right',title: '操作', align:'center', toolbar: '#buttons',width:210}
     ]]
   });
   form.on('switch(is_status)', function (obj) {
@@ -110,7 +113,16 @@ layui.use(['table','form','layer'], function(){
       }else if(obj.event == 'show'){
           $.post("{{route('admin.marketing.coupon.qrcode')}}",{id:data.id},function(res){
                 if(res.status == 1){
-                    layer.alert('<img src="'+res.url+'">');
+                    $('#qrcode img').attr('src',res.url);
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['20rem', '20rem'],
+                        skin: 'layui-layer-nobg', //没有背景色
+                        shadeClose: true,
+                        content: $('#qrcode')
+                    });
                 }else{
                     layer.msg(res.msg);
                 }

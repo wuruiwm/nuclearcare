@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:25:31
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-09 14:55:14
+ * @LastEditTime : 2020-01-09 15:19:06
  */
 return [
     'appid'=>'wxcd417936b51ed32a',
@@ -13,5 +13,5 @@ return [
     'MCHID'=>'1455955802',
     'KEY'=>'abef3c0b40dd00c283551204db78fd77',
     'body'=>'安徽犇犇牛网络科技有限公司',
-    'coupon'=>'pages/goods/detail/index',
+    'coupon'=>'pages/index/coupon/index',
 ];
