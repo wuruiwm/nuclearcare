@@ -191,5 +191,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::get('list','OrderController@list')->name('admin.order.list')->middleware('permission:order.index');
         Route::get('see','OrderController@see')->name('admin.order.see')->middleware('permission:order.see');
         Route::post('service/status','OrderController@service_status')->name('admin.order.service.status')->middleware('permission:order.edit');
+        Route::post('confirmpay','OrderController@confirmpay')->name('admin.order.confirmpay')->middleware('permission:order.edit');
+        Route::post('cancel','OrderController@cancel')->name('admin.order.cancel')->middleware('permission:order.edit');
+        Route::post('complete','OrderController@complete')->name('admin.order.complete')->middleware('permission:order.edit');
     });
 });

@@ -14,7 +14,7 @@
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 1rem;width: 22rem;">
-            <input type="text" placeholder="请输入订单号,姓名,手机号,昵称,OPENID,用户ID" class="layui-input" id="keyword">
+            <input type="text" placeholder="请输入订单号,姓名,手机号,昵称,OPENID,会员ID" class="layui-input" id="keyword">
         </div>
         <div class="layui-inline" style="margin-left: 1rem;">
             <select id="search_status">
@@ -135,6 +135,9 @@ layui.use(['table','form','layer'], function(){
             title:'查看订单',
             maxmin: true,
             content: "{{route('admin.order.see')}}?id="+data.id,
+            end:function(){
+                $('#search').click();
+            }
           });
          layer.full(index);
       }

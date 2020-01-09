@@ -14,7 +14,7 @@
 <div class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 1rem;width: 15rem;">
-            <input type="text" placeholder="请输入昵称,OPENID,用户ID" class="layui-input" id="keyword">
+            <input type="text" placeholder="请输入昵称,OPENID,会员ID" class="layui-input" id="keyword">
         </div>
         <div class="layui-inline" style="margin-left: 1rem;">
             <a class="layui-btn  layui-btn-normal" id="search">搜索</a>
@@ -97,7 +97,7 @@ layui.use(['table','form','layer'], function(){
     //title是这列的标题
     //field是取接口的字段值
     //width是宽度，不填则自动根据值的长度
-      {field:'id', title: 'ID',align: 'center'},
+      {field:'id', title: '会员ID',align: 'center'},
       {field:'avatar_url',title: '会员头像',align: 'center',templet:'#avatar'},
       {field:'openid',title: 'OPENID',align: 'center'},
       {field:'nickname',title: '会员昵称',align: 'center'},

@@ -191,10 +191,10 @@
             <td>订单操作</td>
             <td>
                 @if ($order['status'] == 0)
-                    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="edit">取消订单</a>
-                    <a class="layui-btn layui-btn-sm" lay-event="edit">确认支付</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-sm btn-click" lay-event="cancel">取消订单</a>
+                    <a class="layui-btn layui-btn-sm btn-click" lay-event="confirmpay">确认支付</a>
                 @elseif ($order['status'] == 1)
-                    <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit">确认完成</a>
+                    <a class="layui-btn layui-btn-normal layui-btn-sm btn-click" lay-event="complete">确认完成</a>
                 @elseif ($order['status'] == 2)
                     <span style="color:green;">订单已完成</span>
                 @elseif ($order['status'] == -1)
@@ -224,9 +224,10 @@ $.ajaxSetup({
         layer.closeAll('loading');
     }
 });
-layui.use(['layer','form'],function(){
+layui.use(['layer','form','table'],function(){
     var layer = layui.layer;
     var form = layui.form;
+    var table = layui.table;
     form.on('radio(order_service_status)', function(data){
         var data = {
             id:$(data.elem).data('id'),
@@ -238,6 +239,45 @@ layui.use(['layer','form'],function(){
         })
     });
 })
+$('.btn-click').click(function(){
+    if($(this).attr('lay-event') == 'cancel'){
+        layer.confirm('确认要取消订单吗', function(index){
+            $.post("{{route('admin.order.cancel')}}",{id:getQueryVariable('id')},function(res){
+                if(res.status == 1){
+                    layer.alert(res.msg, function(index){
+                        location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            })
+        });
+    }else if($(this).attr('lay-event') == 'confirmpay'){
+        layer.confirm('确认这笔订单已支付吗', function(index){
+            $.post("{{route('admin.order.confirmpay')}}",{id:getQueryVariable('id')},function(res){
+                if(res.status == 1){
+                    layer.alert(res.msg, function(index){
+                        location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            })
+        });
+    }else if($(this).attr('lay-event') == 'complete'){
+        layer.confirm('确认这笔订单已完成吗', function(index){
+            $.post("{{route('admin.order.complete')}}",{id:getQueryVariable('id')},function(res){
+                if(res.status == 1){
+                    layer.alert(res.msg, function(index){
+                        location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            })
+        });
+    }
+});
 hover_open_img('#avatar',2.5);
 hover_open_img('.photos',4);
 function hover_open_img($text = '',$num = 3){

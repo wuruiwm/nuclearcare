@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-07 09:46:33
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-07 17:20:26
+ * @LastEditTime : 2020-01-09 11:10:30
  */
 
 namespace App\Http\Controllers\Admin;
@@ -72,6 +72,35 @@ class OrderController extends BaseController
         } catch (\Throwable $th) {
             DB::rollBack();
             msg(0,"修改失败");
+        }
+    }
+    public function confirmpay(Request $request){
+        $id = delete_id($request->input('id'));
+        !empty($order = Order::where('id',$id)
+        ->select(['status'])
+        ->first()) || msg(0,'订单不存在');
+        $order->status == 0 || msg(0,"订单不是待付款状态，无法完成订单");
+        try {
+            Order::where('id',$id)
+            ->update(['update_time'=>time(),'status'=>1,'pay_type'=>3,'pay_time'=>time()]) ? msg(1,"操作成功") : msg(0,"操作失败");
+        } catch (\Throwable $th) {
+            msg(0,"操作失败");
+        }
+    }
+    public function cancel(Request $request){
+        Order::cancel(delete_id($request->input('id')));
+    }
+    public function complete(Request $request){
+        $id = delete_id($request->input('id'));
+        !empty($order = Order::where('id',$id)
+        ->select(['status'])
+        ->first()) || msg(0,'订单不存在');
+        $order->status == 1 || msg(0,"订单不是进行中状态，无法完成订单");
+        try {
+            Order::where('id',$id)
+            ->update(['update_time'=>time(),'status'=>2]) ? msg(1,"操作成功") : msg(0,"操作失败");
+        } catch (\Throwable $th) {
+            msg(0,"操作失败");
         }
     }
 }
