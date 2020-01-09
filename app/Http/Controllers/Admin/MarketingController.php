@@ -5,13 +5,14 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-30 14:54:41
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-03 11:06:56
+ * @LastEditTime : 2020-01-09 14:55:48
  */
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\MarketingRecharge;
 use App\Models\Coupon;
+use App\Models\Wx;
 
 class MarketingController extends BaseController
 {
@@ -148,5 +149,9 @@ class MarketingController extends BaseController
                 msg(0,'添加失败');
             }
         }
+    }
+    public function qrcode(Request $request){
+        $id = delete_id($request->input('id'));
+        return Wx::qrcode(Wx::access_token(),config('wx.coupon'),'?id='.$id);
     }
 }

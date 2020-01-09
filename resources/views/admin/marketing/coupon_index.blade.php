@@ -21,6 +21,7 @@
 <table class="layui-hide" id="table" lay-filter="table"></table>
 </body>
 <script type="text/html" id="buttons">
+    <a class="layui-btn layui-btn-xs" lay-event="show">查看优惠券码</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -67,8 +68,8 @@ layui.use(['table','form','layer'], function(){
           return d.validity_time + '天';
       }},
       {field:'full',title: '券满多少可用',align: 'center',width:150},
-      {field:'total',title: '优惠券总数',align: 'center',width:150},
-      {field:'receive_num',title: '已领取数',align: 'center',width:150},
+      {field:'total',title: '优惠券总数',align: 'center',width:100},
+      {field:'receive_num',title: '已领取数',align: 'center',width:100},
       {field:'start_time',title: '开始领取日期',align: 'center',width:180},
       {field:'end_time',title: '结束领取日期',align: 'center',width:180},
       {field:'create_time', title: '创建时间',align: 'center',width:180},
@@ -106,6 +107,14 @@ layui.use(['table','form','layer'], function(){
             title:'编辑优惠券'
         });
         layer.full(index);
+      }else if(obj.event == 'show'){
+          $.post("{{route('admin.marketing.coupon.qrcode')}}",{id:data.id},function(res){
+                if(res.status == 1){
+                    layer.alert('<img src="'+res.url+'">');
+                }else{
+                    layer.msg(res.msg);
+                }
+          })
       }
     });
 });

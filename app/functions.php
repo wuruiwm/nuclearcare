@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-07 11:36:15
+ * @LastEditTime : 2020-01-09 14:41:57
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -423,5 +423,20 @@ function field_check($field,$rule){
 	}
 	$data = $validator->validated();
 	return $data['field'];
+}
+function curl_post($url='',$postdata='',$options=array()) {
+	$ch=curl_init($url);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+	curl_setopt($ch,CURLOPT_POST,1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+	if(!empty($options)) {
+		curl_setopt_array($ch, $options);
+	}
+	$data=curl_exec($ch);
+	curl_close($ch);
+	return $data;
 }
 ?>

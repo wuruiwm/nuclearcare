@@ -184,6 +184,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::post('coupon_delete','MarketingController@coupon_delete')->name('admin.marketing.coupon.delete')->middleware('permission:marketing.coupon.delete');
         Route::any('coupon_create','MarketingController@coupon_create')->name('admin.marketing.coupon.create')->middleware('permission:marketing.coupon.create');
         Route::any('coupon_edit','MarketingController@coupon_edit')->name('admin.marketing.coupon.edit')->middleware('permission:marketing.coupon.edit');
+        Route::any('qrcode','MarketingController@qrcode')->name('admin.marketing.coupon.qrcode')->middleware('permission:marketing.coupon.edit');
     });
     //订单管理
     Route::group(['prefix'=>'order','middleware' => 'permission:banner'],function(){

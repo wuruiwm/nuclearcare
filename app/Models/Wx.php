@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-07 13:39:52
+ * @LastEditTime : 2020-01-09 14:52:31
  */
 
 namespace App\Models;
@@ -37,5 +37,21 @@ class Wx extends Base
         ];
         $data['paySign'] = strtoupper(md5(to_url_params($data)."&key=".config('wx.KEY')));
         return $data;
+    }
+    public static function access_token(){
+        $data = @json_decode(@file_get_contents("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".config('wx.appid')."&secret=".config('wx.appsecret')),true);
+        if(!empty($data['access_token'])){
+            return $data['access_token'];
+        }else{
+            msg(0,'获取access_token失败');
+        }
+    }
+    public static function qrcode($access_token,$page,$query){
+        $url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' . $access_token;
+        $json = json_encode(['page'=>$page,'scene'=>$query],JSON_UNESCAPED_UNICODE);
+        $data = curl_post($url,$json);
+        file_put_contents(public_path().'/qrcode/'.md5(time().mt_rand(1000,9999)).'.png',$data);
+        $url = img_path_url('/qrcode/'.md5(time().mt_rand(1000,9999)).'.png');
+        return ['status'=>1,'msg'=>'获取优惠券码成功','url'=>$url];
     }
 }
