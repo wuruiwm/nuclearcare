@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-09 15:23:45
+ * @LastEditTime : 2020-01-10 16:44:31
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -439,5 +439,15 @@ function curl_post($url='',$postdata='',$options=array()) {
 	$data=curl_exec($ch);
 	curl_close($ch);
 	return $data;
+}
+//前端不想算，我也很无奈啊
+function gei_qianduan_suanqian(&$order_service){
+    foreach($order_service as $k => $v){
+        $price = $v->standard_service_price;
+        foreach($v->additional as $k2 => $v2){
+            $price += $v2['price'];
+        }
+        $v->price = $price;
+    }
 }
 ?>

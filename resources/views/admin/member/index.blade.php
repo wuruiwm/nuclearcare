@@ -14,7 +14,7 @@
 <div class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 1rem;width: 15rem;">
-            <input type="text" placeholder="请输入昵称,OPENID,会员ID" class="layui-input" id="keyword">
+            <input type="text" placeholder="请输入昵称,OPENID" class="layui-input" id="keyword">
         </div>
         <div class="layui-inline" style="margin-left: 1rem;">
             <a class="layui-btn  layui-btn-normal" id="search">搜索</a>
@@ -57,6 +57,7 @@
   </div>
 </script>
 <script type="text/html" id="buttons">
+  <a class="layui-btn layui-btn-xs" lay-event="order">查看订单</a>
   <a class="layui-btn layui-btn-xs" lay-event="recharge">充值</a>
 </script>
 <script src="/static/admin/jquery/jquery.min.js"></script>
@@ -105,7 +106,7 @@ layui.use(['table','form','layer'], function(){
       {field:'balance',title: '会员余额',align: 'center'},
       {field:'create_time', title: '注册时间',align: 'center'},
       {field:'update_time', title: '最后修改时间',align: 'center'},
-      {fixed:'right',title: '操作', align:'center', toolbar: '#buttons'}
+      {fixed:'right',title: '操作', align:'center', toolbar: '#buttons',width:150}
     ]],
     done: function () {
         hoverOpenImg();
@@ -118,7 +119,6 @@ layui.use(['table','form','layer'], function(){
       $("#price").val('');
       $('#remark').val('');
       if(obj.event === 'recharge'){
-        id = data.id;
         layer.open({
             type: 1,
             title:'充值',
@@ -126,6 +126,14 @@ layui.use(['table','form','layer'], function(){
             area: ['50rem;', '18rem;'], //宽高
             content: $('#recharge'),
           });
+      }else if(obj.event === 'order'){
+        var index = layer.open({
+            type: 2,
+            content: "{{route('admin.order')}}?openid="+data.openid,
+            maxmin: true,
+            title:'订单列表'
+        });
+        layer.full(index);
       }
     });
 });

@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-08 16:24:36
+ * @LastEditTime : 2020-01-10 16:44:39
  */
 
 namespace App\Http\Controllers\api;
@@ -160,6 +160,7 @@ class OrderController extends BaseController
         $order['photos'] = img_path_url_arr($order['photos']);
         $order->pay_time = date('Y-m-d H:i:s',$order->pay_time);
         additional_json_to_arr($order_service);
+        gei_qianduan_suanqian($order_service);
         $order->service = $order_service;
         api_json(200,"获取订单详情成功",$order);
     }

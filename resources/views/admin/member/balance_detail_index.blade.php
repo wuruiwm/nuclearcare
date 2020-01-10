@@ -14,7 +14,7 @@
 <div class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 1rem;width: 15rem;">
-            <input type="text" placeholder="请输入昵称,OPENID,会员ID" class="layui-input" id="keyword">
+            <input type="text" placeholder="请输入昵称,OPENID" class="layui-input" id="keyword">
         </div>
         <div class="layui-inline" style="margin-left: 1rem;">
             <a class="layui-btn  layui-btn-normal" id="search">搜索</a>

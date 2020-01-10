@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 13:31:23
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-07 11:47:25
+ * @LastEditTime : 2020-01-10 10:30:51
  */
 
 namespace App\Models;
@@ -68,7 +68,6 @@ class Order extends Base
                 $query->orwhere('o.phone','like','%'.$keyword.'%');
                 $query->orwhere('m.nickname','like','%'.$keyword.'%');
                 $query->orwhere('m.openid','like','%'.$keyword.'%');
-                $query->orwhere('o.member_id',$keyword);
             }  
         })
         ->where(function($query)use($type){

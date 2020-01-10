@@ -14,7 +14,7 @@
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 1rem;width: 22rem;">
-            <input type="text" placeholder="请输入订单号,姓名,手机号,昵称,OPENID,会员ID" class="layui-input" id="keyword">
+            <input type="text" placeholder="请输入订单号,姓名,手机号,昵称,OPENID" class="layui-input" id="keyword">
         </div>
         <div class="layui-inline" style="margin-left: 1rem;">
             <select id="search_status">
@@ -177,5 +177,33 @@ $(document).on('keydown', function(e){
         $('#search').click();
     }
 })
+$(function(){
+    var openid = getQueryVariable('openid');
+    if(openid){
+        $('#keyword').val(openid);
+        setTimeout(function(){
+            layui.use('table', function(){
+                var table = layui.table;
+                table.reload('table', { //表格的id
+                    url:"{{route('admin.order.list')}}",
+                    where:{
+                        'status':$('#search_status').val(),
+                        'keyword':$('#keyword').val(),
+                        'type':$('#search_type').val(),
+                    }
+                });
+            })
+        },200)
+    }
+})
+function getQueryVariable(variable){
+   var query = window.location.search.substring(1);
+   var vars = query.split("&");
+   for (var i=0;i<vars.length;i++) {
+       var pair = vars[i].split("=");
+       if(pair[0] == variable){return pair[1];}
+   }
+   return(false);
+}
 </script>
 </html>

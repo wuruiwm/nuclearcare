@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 11:20:42
+ * @LastEditTime : 2020-01-10 10:30:35
  */
 
 namespace App\Models;
@@ -29,7 +29,6 @@ class BalanceLog extends Base
         ->join('member as m','l.member_id','=','m.id')
         ->where(function($query)use($keyword){
             empty($keyword) || $query->orwhere('m.nickname','like','%'.$keyword.'%')
-            ->orwhere('m.id',$keyword)
             ->orwhere('m.openid','like','%'.$keyword.'%');
         })
         ->select(['l.*','m.openid','m.nickname','m.avatar_url']);
