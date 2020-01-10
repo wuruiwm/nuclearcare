@@ -119,6 +119,7 @@ layui.use(['table','form','layer'], function(){
       $("#price").val('');
       $('#remark').val('');
       if(obj.event === 'recharge'){
+        id = data.id;
         layer.open({
             type: 1,
             title:'充值',
