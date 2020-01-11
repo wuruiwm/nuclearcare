@@ -73,8 +73,14 @@ $.ajaxSetup({
     beforeSend:function(){
         layer.load();
     },
-    error:function(){
-        layer.msg('请检查是否有权限,如有权限请刷新后重试');
+    error:function(xhr){
+        if(xhr.status == 419){
+          layer.msg('CSRF验证过期,请刷新本页面后重试');
+        }else if(xhr.status == 403){
+          layer.msg('请检查您是否有权限');
+        }else{
+          layer.msg('访问出错');
+        }
     },
     complete:function(){
         layer.closeAll('loading');
