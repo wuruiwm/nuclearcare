@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-10 16:44:39
+ * @LastEditTime : 2020-01-11 15:14:45
  */
 
 namespace App\Http\Controllers\api;
@@ -127,7 +127,7 @@ class OrderController extends BaseController
         ->where('status','<>',-1)
         ->where('member_id',$member_id)->where(function($query)use($request){
             $status = $request->input('status');
-            if(!empty($status) && is_numeric($status)){
+            if(is_numeric($status)){
                 $status != 0 || $query->where('status',0);
                 $status != 1 || $query->where('status',1);
                 $status != 2 || $query->where('status',2);
