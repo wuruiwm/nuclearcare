@@ -74,7 +74,7 @@ $.ajaxSetup({
         layer.load();
     },
     error:function(){
-        layer.msg('访问出错,请检查是否有权限');
+        layer.msg('请检查是否有权限,如有权限请刷新后重试');
     },
     complete:function(){
         layer.closeAll('loading');
