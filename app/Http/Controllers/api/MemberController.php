@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-02 10:45:44
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-10 11:55:10
+ * @LastEditTime : 2020-01-13 09:27:36
  */
 
 namespace App\Http\Controllers\api;
@@ -30,6 +30,10 @@ class MemberController extends BaseController
     }
     public function recharge_list(){
         extract(MarketingRecharge::api_list());
+        foreach ($data as $k => $v) {
+            $data[$k]->full = floatval($v['full']);
+            $data[$k]->give = floatval($v['give']);
+        }
         api_json(200,'获取充值优惠列表成功',$data,$count);
     }
     public function order_base(Request $request){
