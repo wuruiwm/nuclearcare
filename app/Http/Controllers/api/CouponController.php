@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-03 11:50:11
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-06 11:02:10
+ * @LastEditTime : 2020-01-13 17:10:37
  */
 namespace App\Http\Controllers\api;
 
@@ -24,6 +24,8 @@ class CouponController extends BaseController
         (time() >= $data['start_time'] && time() <= $data['end_time']) || api_json(500,'优惠券不在领取时间');
         unset($data['start_time']);
         unset($data['end_time']);
+        $data['full'] = floatval($data['full']);
+        $data['face_value'] = floatval($data['face_value']);
         api_json(200,'获取优惠券详情成功',$data);
     }
     public function receive(Request $request){

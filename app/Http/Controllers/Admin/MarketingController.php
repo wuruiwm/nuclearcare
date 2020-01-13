@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-30 14:54:41
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-09 14:55:48
+ * @LastEditTime : 2020-01-13 17:06:34
  */
 namespace App\Http\Controllers\Admin;
 
@@ -152,6 +152,6 @@ class MarketingController extends BaseController
     }
     public function qrcode(Request $request){
         $id = delete_id($request->input('id'));
-        return Wx::qrcode(Wx::access_token(),config('wx.coupon'),'?id='.$id);
+        return Wx::qrcode(Wx::access_token(),config('wx.coupon'),$id);
     }
 }

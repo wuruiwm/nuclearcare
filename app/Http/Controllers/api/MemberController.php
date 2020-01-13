@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-02 10:45:44
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-13 09:27:36
+ * @LastEditTime : 2020-01-13 17:12:23
  */
 
 namespace App\Http\Controllers\api;
@@ -51,6 +51,12 @@ class MemberController extends BaseController
         ];
         array_date($coupon_log_list,['expire_time']);
         !$coupon_log_list->isEmpty() ? $data['is_coupon'] = 1 : $data['is_coupon'] = 0;
+        if(!$coupon_log_list->isEmpty()){
+            foreach ($coupon_log_list as $k => $v) {
+                $coupon_log_list[$k]->face_value = floatval($v['face_value']);
+                $coupon_log_list[$k]->full = floatval($v['full']);
+            }
+        }
         api_json(200,"获取余额和可用优惠券列表成功",$data);
     }
     public function detail(Request $request){
