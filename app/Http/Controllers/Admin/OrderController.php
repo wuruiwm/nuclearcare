@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-07 09:46:33
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-17 11:41:07
+ * @LastEditTime : 2020-01-17 16:13:52
  */
 
 namespace App\Http\Controllers\Admin;
@@ -109,26 +109,18 @@ class OrderController extends BaseController
         !empty($order = Order::from("order as o")
         ->where('o.id',$id)
         ->join('member as m','o.member_id','=','m.id')
-        ->select(['m.openid','o.status'])
+        ->join('order_service as os','o.id','=','os.order_id')
+        ->select(['m.openid','o.status','o.create_time','o.ordersn','os.standard_service_title'])
         ->first()) || msg(0,'订单不存在');
         $order->status == 1 || msg(0,"订单不是进行中状态，无法发送通知");
-        $msg_data = [
-            'number1'=>[
-                'value'=>'111'
-            ],
-            'phrase2'=>[
-                'value'=>'测试'
-            ],
-            'thing10'=>[
-                'value'=>'111'
-            ],
-            'date4'=>[
-                'value'=>date('Y-m-d H:i:s')
-            ],
-            'thing5'=>[
-                'value'=>'111'
+        $msg_data = @json_encode(config('wx.template.pick_up_goods.data'),JSON_UNESCAPED_UNICODE);
+        $msg_data = @json_decode(@strtr($msg_data,
+            [
+                '{订单号}'=>$order['ordersn'],
+                '{下单时间}'=>$order['create_time'],
+                '{商品名称}'=>$order['standard_service_title']
             ]
-        ];
-        Wx::notice(Wx::access_token(),$order['openid'],'z43TyLYMHokJbFHSTycjILIRcWb3PZthRn2E7HFNS78',$msg_data,'pages/me/order/index?num=4');
+        ),true);
+        Wx::notice(Wx::access_token(),$order['openid'],config('wx.template.pick_up_goods.id'),$msg_data,'pages/me/order/index?num=4');
     }
 }
