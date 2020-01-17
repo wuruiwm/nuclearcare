@@ -195,5 +195,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::post('confirmpay','OrderController@confirmpay')->name('admin.order.confirmpay')->middleware('permission:order.edit');
         Route::post('cancel','OrderController@cancel')->name('admin.order.cancel')->middleware('permission:order.edit');
         Route::post('complete','OrderController@complete')->name('admin.order.complete')->middleware('permission:order.edit');
+        Route::post('notice','OrderController@notice')->name('admin.order.notice')->middleware('permission:order.edit');
     });
 });

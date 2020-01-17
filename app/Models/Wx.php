@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-09 15:23:53
+ * @LastEditTime : 2020-01-17 11:39:09
  */
 
 namespace App\Models;
@@ -48,12 +48,18 @@ class Wx extends Base
     }
     public static function qrcode($access_token,$page,$query){
         $url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' . $access_token;
-        $json = json_encode(['page'=>$page,'scene'=>$query],JSON_UNESCAPED_UNICODE);
-        $data = curl_post($url,$json);
+        $data = curl_post($url,json_encode(['page'=>$page,'scene'=>$query],JSON_UNESCAPED_UNICODE));
         empty(@json_decode($data,true)['errcode']) || msg(0,"请检查小程序路径是否存在");
         $path = '/qrcode/'.md5(time().mt_rand(1000,9999)).'.png';
         file_put_contents(public_path().$path,$data);
         $url = img_path_url($path);
         return ['status'=>1,'msg'=>'获取优惠券码成功','url'=>$url];
+    }
+    public static function notice($access_token,$openid,$template_id,$data,$page = ''){
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=' . $access_token;
+        $data = ['touser'=>$openid,'template_id'=>$template_id,'data'=>$data];
+        !empty($page) && $data['page'] = $page;
+        $data = curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+        echo $data;exit();
     }
 }

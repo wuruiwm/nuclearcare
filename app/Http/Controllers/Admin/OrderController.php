@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-07 09:46:33
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-09 11:10:30
+ * @LastEditTime : 2020-01-17 11:41:07
  */
 
 namespace App\Http\Controllers\Admin;
@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
+use App\Models\Wx;
 
 class OrderController extends BaseController
 {
@@ -102,5 +103,32 @@ class OrderController extends BaseController
         } catch (\Throwable $th) {
             msg(0,"操作失败");
         }
+    }
+    public function notice(Request $request){
+        $id = delete_id($request->input('id'));
+        !empty($order = Order::from("order as o")
+        ->where('o.id',$id)
+        ->join('member as m','o.member_id','=','m.id')
+        ->select(['m.openid','o.status'])
+        ->first()) || msg(0,'订单不存在');
+        $order->status == 1 || msg(0,"订单不是进行中状态，无法发送通知");
+        $msg_data = [
+            'number1'=>[
+                'value'=>'111'
+            ],
+            'phrase2'=>[
+                'value'=>'测试'
+            ],
+            'thing10'=>[
+                'value'=>'111'
+            ],
+            'date4'=>[
+                'value'=>date('Y-m-d H:i:s')
+            ],
+            'thing5'=>[
+                'value'=>'111'
+            ]
+        ];
+        Wx::notice(Wx::access_token(),$order['openid'],'z43TyLYMHokJbFHSTycjILIRcWb3PZthRn2E7HFNS78',$msg_data,'pages/me/order/index?num=4');
     }
 }

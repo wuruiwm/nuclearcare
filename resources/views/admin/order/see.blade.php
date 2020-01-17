@@ -194,6 +194,7 @@
                     <a class="layui-btn layui-btn-danger layui-btn-sm btn-click" lay-event="cancel">取消订单</a>
                     <a class="layui-btn layui-btn-sm btn-click" lay-event="confirmpay">确认支付</a>
                 @elseif ($order['status'] == 1)
+                    <a class="layui-btn layui-btn-warm layui-btn-sm btn-click" lay-event="notice">发送取货通知</a>
                     <a class="layui-btn layui-btn-normal layui-btn-sm btn-click" lay-event="complete">确认完成</a>
                 @elseif ($order['status'] == 2)
                     <span style="color:green;">订单已完成</span>
@@ -217,7 +218,7 @@ $.ajaxSetup({
     beforeSend:function(){
         layer.load();
     },
-    error:function(){
+    error:function(xhr){
         if(xhr.status == 419){
           layer.msg('CSRF验证过期,请刷新本页面后重试');
         }else if(xhr.status == 403){
@@ -273,6 +274,18 @@ $('.btn-click').click(function(){
     }else if($(this).attr('lay-event') == 'complete'){
         layer.confirm('确认这笔订单已完成吗', function(index){
             $.post("{{route('admin.order.complete')}}",{id:getQueryVariable('id')},function(res){
+                if(res.status == 1){
+                    layer.alert(res.msg, function(index){
+                        location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            })
+        });
+    }else if($(this).attr('lay-event') == 'notice'){
+        layer.confirm('确认给用户发送取货通知吗', function(index){
+            $.post("{{route('admin.order.notice')}}",{id:getQueryVariable('id')},function(res){
                 if(res.status == 1){
                     layer.alert(res.msg, function(index){
                         location.reload();

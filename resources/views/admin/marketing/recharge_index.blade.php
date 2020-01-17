@@ -55,7 +55,7 @@ $.ajaxSetup({
     beforeSend:function(){
         layer.load();
     },
-    error:function(){
+    error:function(xhr){
         if(xhr.status == 419){
           layer.msg('CSRF验证过期,请刷新本页面后重试');
         }else if(xhr.status == 403){
