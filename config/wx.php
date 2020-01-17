@@ -5,13 +5,13 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 17:25:31
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-09 15:19:06
+ * @LastEditTime : 2020-01-17 13:58:15
  */
 return [
-    'appid'=>'wxcd417936b51ed32a',
-    'appsecret'=>'98c15b289da36fe0d9910adf4acc4eaf',
-    'MCHID'=>'1455955802',
-    'KEY'=>'abef3c0b40dd00c283551204db78fd77',
-    'body'=>'安徽犇犇牛网络科技有限公司',
+    'appid'=>'wxb7edf993339d7084',
+    'appsecret'=>'caf22a17f6cdd8af6441f0c4239978ae',
+    'MCHID'=>'1574276841',
+    'KEY'=>'2f546921d89906bf84f28998d006011f',
+    'body'=>'nuclearcare球鞋洗护',
     'coupon'=>'pages/index/coupon/index',
 ];
