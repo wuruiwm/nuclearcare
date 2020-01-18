@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:12:26
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-17 16:14:55
+ * @LastEditTime : 2020-01-18 09:21:48
  */
 
 namespace App\Models;
@@ -59,7 +59,13 @@ class Wx extends Base
         $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=' . $access_token;
         $data = ['touser'=>$openid,'template_id'=>$template_id,'data'=>$data];
         !empty($page) && $data['page'] = $page;
-        $data = curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
-        echo $data;exit();
+        $data = @json_decode(curl_post($url,@json_encode($data,JSON_UNESCAPED_UNICODE)),true);
+        if($data['errcode'] == 0){
+            return true;
+        }else if($data['errcode'] == 43101){
+            return '发送通知失败,用户未订阅,或拒收通知';
+        }else{
+            return '发送通知失败,错误码'.$data['errcode'];
+        }
     }
 }

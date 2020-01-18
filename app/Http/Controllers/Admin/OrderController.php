@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-07 09:46:33
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-17 16:13:52
+ * @LastEditTime : 2020-01-18 09:38:38
  */
 
 namespace App\Http\Controllers\Admin;
@@ -114,13 +114,17 @@ class OrderController extends BaseController
         ->first()) || msg(0,'订单不存在');
         $order->status == 1 || msg(0,"订单不是进行中状态，无法发送通知");
         $msg_data = @json_encode(config('wx.template.pick_up_goods.data'),JSON_UNESCAPED_UNICODE);
-        $msg_data = @json_decode(@strtr($msg_data,
-            [
-                '{订单号}'=>$order['ordersn'],
-                '{下单时间}'=>$order['create_time'],
-                '{商品名称}'=>$order['standard_service_title']
-            ]
-        ),true);
-        Wx::notice(Wx::access_token(),$order['openid'],config('wx.template.pick_up_goods.id'),$msg_data,'pages/me/order/index?num=4');
+        $msg_data = @json_decode(@strtr($msg_data,['{订单号}'=>$order['ordersn'],'{下单时间}'=>$order['create_time'],'{商品名称}'=>$order['standard_service_title']
+        ]),true);
+        if(($res = Wx::notice(Wx::access_token(),$order['openid'],config('wx.template.pick_up_goods.id'),$msg_data,'pages/me/order/index?num=4')) === true){
+            try {
+                Order::where('id',$id)->update(['update_time'=>time(),'is_notice'=>1]);
+                msg(1,'推送通知成功');
+            } catch (\Throwable $th) {
+                msg(0,"通知发送成功,修改订单状态失败");
+            }
+        }else{
+            msg(0,$res);
+        }
     }
 }

@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 15:20:43
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-02 13:55:27
+ * @LastEditTime : 2020-01-18 10:08:23
  */
 
 /*
@@ -19,6 +19,4 @@
 |
 */
 
-Route::get('/', function () {
-    http301(domain_name()."/admin");
-});
+Route::get('/', 'Controller@AdminLocation');

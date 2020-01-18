@@ -194,7 +194,9 @@
                     <a class="layui-btn layui-btn-danger layui-btn-sm btn-click" lay-event="cancel">取消订单</a>
                     <a class="layui-btn layui-btn-sm btn-click" lay-event="confirmpay">确认支付</a>
                 @elseif ($order['status'] == 1)
-                    <a class="layui-btn layui-btn-warm layui-btn-sm btn-click" lay-event="notice">发送取货通知</a>
+                    @if ($order['is_notice'] == 0)
+                        <a class="layui-btn layui-btn-warm layui-btn-sm btn-click" lay-event="notice">发送取货通知</a>
+                    @endif
                     <a class="layui-btn layui-btn-normal layui-btn-sm btn-click" lay-event="complete">确认完成</a>
                 @elseif ($order['status'] == 2)
                     <span style="color:green;">订单已完成</span>

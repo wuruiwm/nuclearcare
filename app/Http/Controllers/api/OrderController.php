@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-11 15:14:45
+ * @LastEditTime : 2020-01-18 10:32:14
  */
 
 namespace App\Http\Controllers\api;
@@ -162,6 +162,11 @@ class OrderController extends BaseController
         additional_json_to_arr($order_service);
         gei_qianduan_suanqian($order_service);
         $order->service = $order_service;
+        $template = [];
+        foreach (config('wx.template') as $k => $v) {
+            $template[] = $v['id'];
+        }
+        $order->template = $template;
         api_json(200,"获取订单详情成功",$order);
     }
     public function cancel(Request $request){

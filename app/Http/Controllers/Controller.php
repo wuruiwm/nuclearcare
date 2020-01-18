@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 15:20:43
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2019-12-31 15:06:18
+ * @LastEditTime : 2020-01-18 10:07:43
  */
 
 namespace App\Http\Controllers;
@@ -29,5 +29,8 @@ class Controller extends BaseController
         foreach ($this->redis_key_arr as $v) {
             Cache::store('redis')->forget($v);
         }
+    }
+    public function AdminLocation(){
+        http301(domain_name()."/admin");
     }
 }
