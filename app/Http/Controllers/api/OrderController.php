@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-18 10:32:14
+ * @LastEditTime : 2020-01-18 13:52:25
  */
 
 namespace App\Http\Controllers\api;
@@ -101,7 +101,9 @@ class OrderController extends BaseController
             $order_id = Order::insertGetId($data);
             DB::table('order_service')->insert(order_service_arr($service,$service_arr,$order_id));
             DB::commit();
-            api_json(200,'提交订单成功',['order_id'=>$order_id]);
+            $data['template'] = template_list();
+            $data['order_id'] = $order_id;
+            api_json(200,'提交订单成功',$data);
         } catch (\Throwable $th) {
             DB::rollBack();
             api_json(500,'提交订单失败,请重试');
@@ -162,11 +164,7 @@ class OrderController extends BaseController
         additional_json_to_arr($order_service);
         gei_qianduan_suanqian($order_service);
         $order->service = $order_service;
-        $template = [];
-        foreach (config('wx.template') as $k => $v) {
-            $template[] = $v['id'];
-        }
-        $order->template = $template;
+        $order->template = template_list();
         api_json(200,"获取订单详情成功",$order);
     }
     public function cancel(Request $request){

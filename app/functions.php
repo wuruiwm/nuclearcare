@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-10 16:44:31
+ * @LastEditTime : 2020-01-18 13:51:56
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -449,5 +449,13 @@ function gei_qianduan_suanqian(&$order_service){
         }
         $v->price = $price;
     }
+}
+//获取所有的模板id
+function template_list(){
+    $template = [];
+    foreach (config('wx.template') as $k => $v) {
+        $template[] = $v['id'];
+    }
+    return $template;
 }
 ?>
