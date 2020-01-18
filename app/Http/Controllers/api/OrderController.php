@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-18 13:52:25
+ * @LastEditTime : 2020-01-18 14:06:26
  */
 
 namespace App\Http\Controllers\api;
@@ -51,15 +51,14 @@ class OrderController extends BaseController
         $data['payable_price'] = $data['total_price'];
         $data['update_time'] = time();
         $data['create_time'] = time();
-        $data['photos'] = json_encode([]);
+        !empty($data['photos'] = @json_decode($request->input('photos'),true)) || $data['photos'] = [];
+        $data['photos'] = json_encode($data['photos']);
         if($data['type'] == 2){
             !empty($data['address'] = $request->input('address')) || api_json(500,"地址不能为空");
             if($data['is_send'] == 1){
                 empty($request->input('express_name')) || $data['express_name'] = $request->input('express_name');
                 empty($request->input('express_number')) || $data['express_number'] = $request->input('express_number');
             }
-            !empty($data['photos'] = @json_decode($request->input('photos'),true)) || $data['photos'] = [];
-            $data['photos'] = json_encode($data['photos']);
         }
         DB::beginTransaction();
         try {
