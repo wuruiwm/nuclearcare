@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-18 14:06:26
+ * @LastEditTime : 2020-01-18 14:14:24
  */
 
 namespace App\Http\Controllers\api;
@@ -100,9 +100,7 @@ class OrderController extends BaseController
             $order_id = Order::insertGetId($data);
             DB::table('order_service')->insert(order_service_arr($service,$service_arr,$order_id));
             DB::commit();
-            $data['template'] = template_list();
-            $data['order_id'] = $order_id;
-            api_json(200,'提交订单成功',$data);
+            api_json(200,'提交订单成功',['order_id'=>$order_id]);
         } catch (\Throwable $th) {
             DB::rollBack();
             api_json(500,'提交订单失败,请重试');

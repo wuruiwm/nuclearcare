@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-02 10:45:44
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-13 17:18:04
+ * @LastEditTime : 2020-01-18 14:15:01
  */
 
 namespace App\Http\Controllers\api;
@@ -57,6 +57,7 @@ class MemberController extends BaseController
                 $coupon_log_list[$k]->full = floatval($v->full);
             }
         }
+        $data['template'] = template_list();
         api_json(200,"获取余额和可用优惠券列表成功",$data);
     }
     public function detail(Request $request){
