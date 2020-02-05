@@ -135,7 +135,7 @@ class OrderController extends BaseController
         $count = $order->count();
         $order = $order->offset($number)
         ->limit($limit)
-        ->select(['id','ordersn','status','payable_price'])
+        ->select(['id','ordersn','status','payable_price','type'])
         ->get();
         $order_service = DB::table('order_service')
         ->orderBy('id','asc')
