@@ -100,7 +100,7 @@ class OrderController extends BaseController
             $order_id = Order::insertGetId($data);
             DB::table('order_service')->insert(order_service_arr($service,$service_arr,$order_id));
             DB::commit();
-            $data['pay_type'] == 1 ? api_json(200,'提交订单成功',['order_id'=>$order_id,'status'=>0]) : api_json(200,'提交订单成功',['order_id'=>$order_id,'status'=>1]);
+            $data['pay_type'] == 1 ? api_json(200,'提交订单成功，余额足够抵扣，无需支付',['order_id'=>$order_id,'status'=>0]) : api_json(200,'提交订单成功',['order_id'=>$order_id,'status'=>1]);
         } catch (\Throwable $th) {
             DB::rollBack();
             api_json(500,'提交订单失败,请重试');
