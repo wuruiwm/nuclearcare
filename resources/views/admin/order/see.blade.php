@@ -131,6 +131,12 @@
                     <input lay-filter="order_service_status" type="radio" name="order_service_{{$v->id}}" data-id="{{$v->id}}" value="1" title="清洗中" @if ($v->status == 1) checked @endif>
                     <input lay-filter="order_service_status" type="radio" name="order_service_{{$v->id}}" data-id="{{$v->id}}" value="2" title="待提货" @if ($v->status == 2) checked @endif>
                     <input lay-filter="order_service_status" type="radio" name="order_service_{{$v->id}}" data-id="{{$v->id}}" value="3" title="已提货" @if ($v->status == 3) checked @endif>
+                    <div class="layui-inline" style="width: 13rem;height:2.7rem;">
+                        <input id="number_{{$v->id}}" type="text" placeholder="请输入要备注的鞋子编号" class="layui-input" value="{{$v->number}}"> 
+                    </div>
+                    <div class="layui-inline" style="margin-left: 1rem;height:2.7rem;">
+                        <a class="layui-btn number" data-id="{{$v->id}}">保存</a>
+                    </div>
                 </div>
             </li>
             @endforeach
@@ -299,6 +305,13 @@ $('.btn-click').click(function(){
         });
     }
 });
+$('.number').click(function(){
+    var service_id = $(this).data('id');
+    var val = $('#number_'+service_id).val();
+    $.post("{{route('admin.order.number')}}",{id:getQueryVariable('id'),service_id:service_id,val:val},function(res){
+        layer.msg(res.msg);
+    })
+})
 hover_open_img('#avatar',2.5);
 hover_open_img('.photos',4);
 function hover_open_img($text = '',$num = 3){

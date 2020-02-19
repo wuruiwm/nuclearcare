@@ -4,7 +4,7 @@
  * @QQ: 1250201168
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-07 09:46:33
- * @LastEditors  : 傍晚升起的太阳
+ * @LastEditors: 傍晚升起的太阳
  * @LastEditTime : 2020-01-18 09:38:38
  */
 
@@ -35,7 +35,7 @@ class OrderController extends BaseController
         $order['photos'] = img_path_url_arr(json_decode($order['photos'],true));
         $order_service = DB::table('order_service')
         ->where('order_id',$id)
-        ->select(['id','status','standard_service_title','standard_service_price','additional'])
+        ->select(['id','status','standard_service_title','standard_service_price','additional','number'])
         ->get();
         foreach ($order_service as $k => $v) {
             $v->price = $v->standard_service_price;
@@ -125,6 +125,31 @@ class OrderController extends BaseController
             }
         }else{
             msg(0,$res);
+        }
+    }
+    public function number(Request $request){
+        $id = delete_id($request->input('id'));
+        $service_id = delete_id($request->input('service_id'));
+        !empty($val = $request->input('val')) || msg(0,'输入的编号不能为空');
+        DB::beginTransaction();
+        try {
+            DB::table('order_service')
+            ->where('id',$service_id)
+            ->where('order_id',$id)
+            ->update(['update_time'=>time(),'number'=>$val]);
+            $order_service = DB::table('order_service')
+            ->where('order_id',$id)
+            ->select(['number'])->get();
+            $number_text = [];
+            foreach($order_service as $k => $v){
+                $number_text[] = $v->number;
+            }
+            Order::where('id',$id)->update(['update_time'=>time(),'number_text'=>json_encode($number_text,JSON_UNESCAPED_UNICODE)]);
+            DB::commit();
+            msg(1,"修改成功");
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            msg(0,"修改失败");
         }
     }
 }

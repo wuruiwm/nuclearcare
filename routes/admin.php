@@ -187,7 +187,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::any('qrcode','MarketingController@qrcode')->name('admin.marketing.coupon.qrcode')->middleware('permission:marketing.coupon.edit');
     });
     //订单管理
-    Route::group(['prefix'=>'order','middleware' => 'permission:banner'],function(){
+    Route::group(['prefix'=>'order','middleware' => 'permission:order'],function(){
         Route::get('index','OrderController@index')->name('admin.order')->middleware('permission:order.index');
         Route::get('list','OrderController@list')->name('admin.order.list')->middleware('permission:order.index');
         Route::get('see','OrderController@see')->name('admin.order.see')->middleware('permission:order.see');
@@ -196,5 +196,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::post('cancel','OrderController@cancel')->name('admin.order.cancel')->middleware('permission:order.edit');
         Route::post('complete','OrderController@complete')->name('admin.order.complete')->middleware('permission:order.edit');
         Route::post('notice','OrderController@notice')->name('admin.order.notice')->middleware('permission:order.edit');
+        Route::post('number','OrderController@number')->name('admin.order.number')->middleware('permission:order.edit');
     });
 });

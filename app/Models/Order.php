@@ -4,7 +4,7 @@
  * @QQ: 1250201168
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 13:31:23
- * @LastEditors  : 傍晚升起的太阳
+ * @LastEditors: 傍晚升起的太阳
  * @LastEditTime : 2020-01-10 10:30:51
  */
 
@@ -66,9 +66,10 @@ class Order extends Base
                 $query->orwhere('o.ordersn','like','%'.$keyword.'%');
                 $query->orwhere('o.name','like','%'.$keyword.'%');
                 $query->orwhere('o.phone','like','%'.$keyword.'%');
+                $query->orwhere('o.number_text','like','%'.$keyword.'%');
                 $query->orwhere('m.nickname','like','%'.$keyword.'%');
                 $query->orwhere('m.openid','like','%'.$keyword.'%');
-            }  
+            }
         })
         ->where(function($query)use($type){
             !empty($type) && ($type == 1 || $type == 2) && $query->where('o.type',$type);

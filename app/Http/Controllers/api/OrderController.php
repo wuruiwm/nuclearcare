@@ -4,7 +4,7 @@
  * @QQ: 1250201168
  * @Email: wuruiwm@qq.com
  * @Date: 2020-01-04 09:50:19
- * @LastEditors  : 傍晚升起的太阳
+ * @LastEditors: 傍晚升起的太阳
  * @LastEditTime : 2020-01-18 14:14:24
  */
 
@@ -140,7 +140,7 @@ class OrderController extends BaseController
         $order_service = DB::table('order_service')
         ->orderBy('id','asc')
         ->whereIn('order_id',array_in($order))
-        ->select(['order_id','status','standard_service_title','standard_service_price','additional'])
+        ->select(['order_id','status','standard_service_title','standard_service_price','additional','number'])
         ->get();
         api_json(200,"获取订单列表成功",order_service_list_price_or_title($order,$order_service),$count);
     }
@@ -153,7 +153,7 @@ class OrderController extends BaseController
         ->first()) || api_json(500,"订单不存在,请重试");
         !empty($order_service = DB::table('order_service')
         ->where('order_id',$id)
-        ->select(['status','standard_service_title','standard_service_price','additional'])
+        ->select(['status','standard_service_title','standard_service_price','additional','number'])
         ->get()) || api_json(500,"订单不存在,请重试");
         $order['photos'] = json_decode($order['photos'],true);
         $order['photos'] = img_path_url_arr($order['photos']);
