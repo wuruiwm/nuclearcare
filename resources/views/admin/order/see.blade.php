@@ -67,6 +67,12 @@
             <td>手机号</td>
             <td>{{$order['phone']}}</td>
           </tr>
+          if (!empty($order['address']))
+          <tr>
+            <td>地址</td>
+            <td>{{$order['address']}}</td>
+          </tr>
+          @endif
           <tr>
             <td>订单备注</td>
             <td>@if (!empty($order['remark'])){{$order['remark']}}@else 无备注 @endif</td>
