@@ -67,7 +67,7 @@
             <td>手机号</td>
             <td>{{$order['phone']}}</td>
           </tr>
-          if (!empty($order['address']))
+          @if (!empty($order['address']))
           <tr>
             <td>地址</td>
             <td>{{$order['address']}}</td>
