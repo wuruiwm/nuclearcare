@@ -153,6 +153,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
         Route::post('delete','BannerController@delete')->name('admin.banner.delete')->middleware('permission:banner.delete');
         Route::post('create','BannerController@create')->name('admin.banner.create')->middleware('permission:banner.create');
         Route::post('edit','BannerController@edit')->name('admin.banner.edit')->middleware('permission:banner.edit');
+        Route::get('long_index','BannerController@long_index')->name('admin.banner.long_index')->middleware('permission:banner.long_index');
+        Route::post('long_edit','BannerController@long_edit')->name('admin.banner.long_edit')->middleware('permission:banner.long_edit');
     });
     //服务管理
     Route::group(['prefix'=>'service','middleware' => 'permission:service'],function(){

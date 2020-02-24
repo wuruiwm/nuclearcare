@@ -5,7 +5,7 @@
  * @Email: wuruiwm@qq.com
  * @Date: 2019-12-27 10:11:07
  * @LastEditors  : 傍晚升起的太阳
- * @LastEditTime : 2020-01-18 13:51:56
+ * @LastEditTime : 2020-02-24 17:06:29
  */
 //返回status和msg 并exit
 function msg($status = 0,$msg = ''){
@@ -97,13 +97,14 @@ function http301($url = ''){
 	exit();
 }
 //api接口返回
-function api_json($code = 200,$msg = '请求成功',$data = [],$count = ''){
+function api_json($code = 200,$msg = '请求成功',$data = [],$count = '',$field = []){
 	$array = [
 		'code'=>$code,
 		'msg'=>$msg
 	];
 	empty($data) || $array['data'] = $data;
-	(empty($count) && !is_numeric($count)) || $array['count'] = $count;
+    (empty($count) && !is_numeric($count)) || $array['count'] = $count;
+    (empty($field) && !is_array($field)) || ($array = array_merge($array,$field));
 	showjson($array);
 }
 //将图片路径转换成前端可以访问的url
