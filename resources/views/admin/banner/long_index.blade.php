@@ -15,6 +15,7 @@
     <blockquote class="layui-elem-quote quoteBox">
         <div class="layui-inline" style="margin-left: 2rem;">
             <a class="layui-btn upload">上传长图</a>
+            <span style="color: red;">*推荐图片宽度为750</span>
         </div>
     </blockquote>
 </div>
