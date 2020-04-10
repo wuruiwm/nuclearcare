@@ -1260,7 +1260,8 @@
                 "name": "Jakub Onderka",
                 "email": "jakub.onderka@gmail.com"
             }
-        ]
+        ],
+        "abandoned": "php-parallel-lint/php-console-color"
     },
     {
         "name": "jakub-onderka/php-console-highlighter",
@@ -1314,7 +1315,8 @@
                 "homepage": "http://www.acci.cz/"
             }
         ],
-        "description": "Highlight PHP code in terminal"
+        "description": "Highlight PHP code in terminal",
+        "abandoned": "php-parallel-lint/php-console-highlighter"
     },
     {
         "name": "laravel/framework",
@@ -5391,17 +5393,17 @@
     },
     {
         "name": "symfony/http-foundation",
-        "version": "v4.4.2",
-        "version_normalized": "4.4.2.0",
+        "version": "v4.4.7",
+        "version_normalized": "4.4.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/http-foundation.git",
-            "reference": "fcae1cff5b57b2a9c3aabefeb1527678705ddb62"
+            "reference": "62f92509c9abfd1f73e17b8cf1b72c0bdac6611b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/http-foundation/zipball/fcae1cff5b57b2a9c3aabefeb1527678705ddb62",
-            "reference": "fcae1cff5b57b2a9c3aabefeb1527678705ddb62",
+            "url": "https://api.github.com/repos/symfony/http-foundation/zipball/62f92509c9abfd1f73e17b8cf1b72c0bdac6611b",
+            "reference": "62f92509c9abfd1f73e17b8cf1b72c0bdac6611b",
             "shasum": "",
             "mirrors": [
                 {
@@ -5419,7 +5421,7 @@
             "predis/predis": "~1.0",
             "symfony/expression-language": "^3.4|^4.0|^5.0"
         },
-        "time": "2019-12-19T15:57:49+00:00",
+        "time": "2020-03-30T14:07:33+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

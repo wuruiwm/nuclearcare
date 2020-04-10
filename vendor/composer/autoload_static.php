@@ -529,7 +529,7 @@ class ComposerStaticInit6675cbe0f4bd494f35f4f72af7e495cd
         'App\\Http\\Controllers\\api\\OrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/OrderController.php',
         'App\\Http\\Controllers\\api\\ServiceController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ServiceController.php',
         'App\\Http\\Controllers\\api\\UploadController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/UploadController.php',
-        'App\\Http\\Controllers\\api\\WxController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/WxController.php',
+        'App\\Http\\Controllers\\api\\WxController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/Wxcontroller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',

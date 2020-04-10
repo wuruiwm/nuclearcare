@@ -32,7 +32,7 @@ return array(
     'App\\Http\\Controllers\\api\\OrderController' => $baseDir . '/app/Http/Controllers/api/OrderController.php',
     'App\\Http\\Controllers\\api\\ServiceController' => $baseDir . '/app/Http/Controllers/api/ServiceController.php',
     'App\\Http\\Controllers\\api\\UploadController' => $baseDir . '/app/Http/Controllers/api/UploadController.php',
-    'App\\Http\\Controllers\\api\\WxController' => $baseDir . '/app/Http/Controllers/api/WxController.php',
+    'App\\Http\\Controllers\\api\\WxController' => $baseDir . '/app/Http/Controllers/api/Wxcontroller.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Middleware\\CheckForMaintenanceMode' => $baseDir . '/app/Http/Middleware/CheckForMaintenanceMode.php',
